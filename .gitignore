@@ -1,0 +1,65 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive
+*.env
+*.key
+*.pem
+credentials*.json
+
+# Temp
+*.tmp
+*.swp
+*~
+.~lock*
+.WeDrive
+
+# Claude sessions
+.claude/sessions/
+.claude/session-env/
+.claude/shell-snapshots/
+.claude/backups/
+.claude/plans/
+.claude/mcp-needs-auth-cache.json
+
+# Node
+node_modules/
+
+# Worktrees
+.claude/worktrees/
+**/.claude/worktrees/
+
+# Excel lock files
+~$*.xlsx
+
+# Logs
+scripts/refresh.log
+
+# ============================================
+# Fund data — sensitive after customization
+# These files ship with sample data in the template,
+# but will contain REAL fund data once you customize.
+# Keep them gitignored to prevent accidental commits.
+# ============================================
+data/state/*.json
+!data/state/schema.json
+
+# Dashboard portfolio (copy of state data, publicly served by Next.js)
+dashboard/public/portfolio.json
+
+# Raw sensitive inputs (your source documents)
+raw/deals/
+raw/lp-relations/
+raw/legal/
+
+# Generated outputs (may reference real fund data)
+output/
+deals/
+
+# Cloud-linked project symlinks (machine-specific)
+projects/Invested/
+projects/Pipeline/
+projects/Legacy/
+projects/Archive/
+projects/Reference/

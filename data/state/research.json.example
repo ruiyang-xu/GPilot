@@ -1,0 +1,32 @@
+[
+  {
+    "research_id": "MP-W15-2026",
+    "title": "AI Infrastructure: The Pick-and-Shovel Opportunity",
+    "type": "Market Note",
+    "status": "Published",
+    "tier": "fast-track",
+    "author": "the GP",
+    "created_date": "2026-04-01",
+    "published_date": "2026-04-02",
+    "editorial_score": 4.2,
+    "platforms": ["WeChat", "LinkedIn"],
+    "output_path_en": "research/published/samples/market_pulse/",
+    "output_path_cn": "research/published/samples/market_pulse/",
+    "tags": ["AI", "infrastructure", "compute"]
+  },
+  {
+    "research_id": "CT-002-2026",
+    "title": "Quantum Labs: Democratizing AI Model Training",
+    "type": "Company Teardown",
+    "status": "Draft",
+    "tier": "full",
+    "author": "the GP",
+    "created_date": "2026-04-05",
+    "published_date": null,
+    "editorial_score": null,
+    "platforms": [],
+    "output_path_en": "",
+    "output_path_cn": "",
+    "tags": ["AI", "MLOps", "training"]
+  }
+]

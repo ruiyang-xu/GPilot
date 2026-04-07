@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sector Deep Dive - [SECTOR NAME]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 677px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+        }
+
+        /* HEADER */
+        .header {
+            border-bottom: 2px solid #1a1a2e;
+            padding-bottom: 32px;
+            margin-bottom: 40px;
+        }
+
+        .brand {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #4361ee;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .sector-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .sector-title-cn {
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #4361ee;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 17px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 0.5px;
+        }
+
+        .meta span {
+            margin-right: 20px;
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f4a261;
+        }
+
+        .section-subtitle {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            margin-top: 24px;
+        }
+
+        /* EXECUTIVE SUMMARY */
+        .exec-summary-box {
+            background-color: #f0f4ff;
+            border-left: 4px solid #4361ee;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        .exec-summary-box ul {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .exec-summary-box li {
+            margin-bottom: 12px;
+            font-size: 17px;
+            line-height: 1.6;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .exec-summary-box li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4361ee;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .implications {
+            background-color: #fff8f0;
+            padding: 16px 20px;
+            border-radius: 2px;
+            font-weight: 600;
+            color: #e76f51;
+            font-size: 16px;
+        }
+
+        /* THESIS STATEMENT */
+        .thesis {
+            background-color: #fafafa;
+            padding: 32px;
+            margin-bottom: 24px;
+            border-left: 4px solid #f4a261;
+            border-radius: 2px;
+        }
+
+        .thesis-claim {
+            font-size: 22px;
+            font-style: italic;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .thesis-text {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .thesis-text p {
+            margin-bottom: 16px;
+        }
+
+        /* MARKET MAP */
+        .market-map {
+            margin-bottom: 24px;
+        }
+
+        .grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-3x3 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+
+        .market-card {
+            border: 1px solid #e0e0e0;
+            padding: 16px;
+            background-color: #fafafa;
+            border-radius: 2px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .market-card:hover {
+            border-color: #4361ee;
+            background-color: #f0f4ff;
+        }
+
+        .company-name {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .company-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stage-seed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .stage-series-a {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .stage-series-b {
+            background-color: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .stage-growth {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        /* WHY NOW - CATALYSTS */
+        .catalyst-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            margin-top: 20px;
+        }
+
+        .catalyst-item {
+            position: relative;
+        }
+
+        .catalyst-number {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #4361ee;
+            opacity: 0.3;
+            margin-bottom: -8px;
+        }
+
+        .catalyst-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .catalyst-text {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .catalyst-text p {
+            margin-bottom: 12px;
+        }
+
+        .data-callout {
+            background-color: #f0f4ff;
+            border-left: 4px solid #4361ee;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 2px;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+        }
+
+        .data-callout-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4361ee;
+            margin-bottom: 4px;
+        }
+
+        .data-callout-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* VALUE CHAIN */
+        .value-chain {
+            background-color: #fafafa;
+            padding: 24px;
+            margin-top: 20px;
+            border-radius: 2px;
+        }
+
+        .chain-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .chain-layer {
+            flex: 1;
+            min-width: 120px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            padding: 16px;
+            text-align: center;
+            border-radius: 2px;
+        }
+
+        .chain-layer.infrastructure {
+            border-color: #4361ee;
+        }
+
+        .chain-layer.platform {
+            border-color: #f4a261;
+        }
+
+        .chain-layer.application {
+            border-color: #e76f51;
+        }
+
+        .chain-layer.distribution {
+            border-color: #1a1a2e;
+        }
+
+        .chain-layer-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .chain-layer-margin {
+            font-size: 13px;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* COMPANY PROFILES */
+        .company-profile {
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .profile-name {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .profile-stage {
+            font-size: 12px;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        .detail-label {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: #1a1a2e;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .profile-description {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* COMPARISON TABLE */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-table thead {
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            border-bottom: 2px solid #1a1a2e;
+        }
+
+        .comparison-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+
+        /* INVESTMENT IMPLICATIONS */
+        .implications-box {
+            background-color: #fff8f0;
+            border-left: 4px solid #e76f51;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: 2px;
+        }
+
+        .implications-box h4 {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .implications-box ul {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .implications-box li {
+            margin-bottom: 12px;
+            font-size: 16px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .implications-box li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #e76f51;
+            font-weight: bold;
+        }
+
+        /* CONVICTION LEVELS */
+        .conviction-level {
+            display: inline-block;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 2px;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+
+        .conviction-high {
+            background-color: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        .conviction-medium {
+            background-color: #ffe0b2;
+            color: #e65100;
+        }
+
+        .conviction-low {
+            background-color: #ffcccc;
+            color: #b71c1c;
+        }
+
+        /* DATA APPENDIX */
+        .appendix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        .appendix-table thead {
+            background-color: #f0f4ff;
+            border-bottom: 2px solid #4361ee;
+        }
+
+        .appendix-table th {
+            padding: 12px;
+            text-align: left;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .appendix-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* SOURCES */
+        .sources {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 2px;
+            font-size: 15px;
+        }
+
+        .sources ol {
+            margin-left: 24px;
+        }
+
+        .sources li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* FOOTER */
+        .footer {
+            border-top: 2px solid #1a1a2e;
+            margin-top: 48px;
+            padding-top: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+        }
+
+        .footer-disclaimer {
+            font-size: 12px;
+            color: #bbb;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        /* UTILITIES */
+        p {
+            margin-bottom: 16px;
+        }
+
+        strong {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        em {
+            font-style: italic;
+            color: #666;
+        }
+
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            html {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+
+            .sector-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .chain-container {
+                flex-wrap: wrap;
+            }
+
+            .chain-layer {
+                min-width: 100px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">Sector Deep Dive</div>
+            <h1 class="sector-title">[SECTOR NAME]</h1>
+            <div class="sector-title-cn">赛道纵深</div>
+            <p class="subtitle">[Thesis statement placeholder: A contrarian, investment-relevant claim about the sector]</p>
+            <div class="meta">
+                <span>March 2026</span>
+                <span>~20 min read</span>
+                <span>Issue #[X]</span>
+            </div>
+        </div>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <div class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="exec-summary-box">
+                <ul>
+                    <li><strong>Key Finding 1:</strong> [Insert finding about market dynamics, regulatory shifts, or competitive landscape]</li>
+                    <li><strong>Key Finding 2:</strong> [Insert finding about TAM expansion, adoption curves, or customer behavior]</li>
+                    <li><strong>Key Finding 3:</strong> [Insert finding about profitability, unit economics, or value accrual]</li>
+                    <li><strong>Key Finding 4 (Optional):</strong> [Insert finding about technological breakthroughs or platform shifts]</li>
+                </ul>
+                <div class="implications">
+                    <strong>Investment Implication:</strong> [One-sentence summary of why this matters for capital allocation]
+                </div>
+            </div>
+        </div>
+
+        <!-- THESIS STATEMENT -->
+        <div class="section">
+            <h2 class="section-title">Thesis Statement</h2>
+            <div class="thesis">
+                <div class="thesis-claim">"[Contrarian, bold claim that challenges consensus.]"</div>
+                <div class="thesis-text">
+                    <p>[2-3 paragraphs providing context, market background, and why conventional wisdom has missed this shift. Include relevant data points, benchmarks, or historical precedent.]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARKET MAP -->
+        <div class="section">
+            <h2 class="section-title">Market Map</h2>
+            <p>The [SECTOR] landscape consists of players across infrastructure, platforms, and applications. Below is a representative sample:</p>
+            <div class="market-map">
+                <div class="grid-3x3">
+                    <div class="market-card">
+                        <div class="company-name">[Company A]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-series-b">Series B</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company B]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-growth">Growth</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company C]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-series-a">Series A</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company D]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-seed">Seed</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company E]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-series-b">Series B</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company F]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-growth">Growth</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company G]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-series-a">Series A</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company H]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-seed">Seed</span>
+                    </div>
+                    <div class="market-card">
+                        <div class="company-name">[Company I]</div>
+                        <div class="company-desc">[Infrastructure/Platform/App category]</div>
+                        <span class="stage-badge stage-series-b">Series B</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHY NOW - CATALYSTS -->
+        <div class="section">
+            <h2 class="section-title">Why Now—Catalyst Analysis</h2>
+            <p>Three critical catalysts are converging to unlock value in [SECTOR]:</p>
+
+            <div class="catalyst-grid">
+                <div class="catalyst-item">
+                    <div class="catalyst-number">01</div>
+                    <div class="catalyst-title">[Catalyst 1 Title]</div>
+                    <div class="catalyst-text">
+                        <p>[Detailed explanation of the first catalyst, including regulatory changes, technology breakthroughs, or market adoption milestones.]</p>
+                        <p>[Supporting paragraph with data or specific examples.]</p>
+                    </div>
+                    <div class="data-callout">
+                        <div class="data-callout-value">$[X]B</div>
+                        <div class="data-callout-label">[Metric: TAM, funding, growth rate, etc.]</div>
+                    </div>
+                </div>
+
+                <div class="catalyst-item">
+                    <div class="catalyst-number">02</div>
+                    <div class="catalyst-title">[Catalyst 2 Title]</div>
+                    <div class="catalyst-text">
+                        <p>[Detailed explanation of the second catalyst.]</p>
+                        <p>[Supporting paragraph with data or specific examples.]</p>
+                    </div>
+                    <div class="data-callout">
+                        <div class="data-callout-value">[X]%</div>
+                        <div class="data-callout-label">[Metric: growth rate, adoption, market share, etc.]</div>
+                    </div>
+                </div>
+
+                <div class="catalyst-item">
+                    <div class="catalyst-number">03</div>
+                    <div class="catalyst-title">[Catalyst 3 Title]</div>
+                    <div class="catalyst-text">
+                        <p>[Detailed explanation of the third catalyst.]</p>
+                        <p>[Supporting paragraph with data or specific examples.]</p>
+                    </div>
+                    <div class="data-callout">
+                        <div class="data-callout-value">[X]x</div>
+                        <div class="data-callout-label">[Metric: multiple, expansion, or acceleration factor]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VALUE CHAIN ANALYSIS -->
+        <div class="section">
+            <h2 class="section-title">Value Chain Analysis</h2>
+            <p>Value accrual in [SECTOR] follows a clear horizontal stack, with inflection points where defensibility and pricing power concentrate:</p>
+
+            <div class="value-chain">
+                <div class="chain-container">
+                    <div class="chain-layer infrastructure">
+                        <div class="chain-layer-title">Infrastructure</div>
+                        <div class="chain-layer-margin">5-15% margin</div>
+                    </div>
+                    <div class="chain-layer platform">
+                        <div class="chain-layer-title">Platform</div>
+                        <div class="chain-layer-margin">40-60% margin</div>
+                    </div>
+                    <div class="chain-layer application">
+                        <div class="chain-layer-title">Application</div>
+                        <div class="chain-layer-margin">20-35% margin</div>
+                    </div>
+                    <div class="chain-layer distribution">
+                        <div class="chain-layer-title">Distribution</div>
+                        <div class="chain-layer-margin">10-25% margin</div>
+                    </div>
+                </div>
+                <p><strong>Key Insight:</strong> [Explain where value accrues most defensibly and why investors should focus on platform companies. Reference network effects, switching costs, or data moats.]</p>
+            </div>
+        </div>
+
+        <!-- KEY COMPANY PROFILES -->
+        <div class="section">
+            <h2 class="section-title">Key Company Profiles</h2>
+
+            <div class="company-profile">
+                <div class="profile-header">
+                    <div class="profile-name">[Company Name]</div>
+                    <div class="profile-stage">Series B</div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Founded</div>
+                        <div class="detail-value">2022</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Funding</div>
+                        <div class="detail-value">$[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Key Metric</div>
+                        <div class="detail-value">[ARR/Users/GMV]: $[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Leadership</div>
+                        <div class="detail-value">[Name], [Title]</div>
+                    </div>
+                </div>
+                <div class="profile-description">
+                    <p>[1-2 paragraph description of the company's thesis, competitive positioning, and why it exemplifies the opportunity we're highlighting in this report.]</p>
+                </div>
+            </div>
+
+            <div class="company-profile">
+                <div class="profile-header">
+                    <div class="profile-name">[Company Name]</div>
+                    <div class="profile-stage">Series A</div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Founded</div>
+                        <div class="detail-value">2023</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Funding</div>
+                        <div class="detail-value">$[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Key Metric</div>
+                        <div class="detail-value">[ARR/Users/GMV]: $[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Leadership</div>
+                        <div class="detail-value">[Name], [Title]</div>
+                    </div>
+                </div>
+                <div class="profile-description">
+                    <p>[1-2 paragraph description.]</p>
+                </div>
+            </div>
+
+            <div class="company-profile">
+                <div class="profile-header">
+                    <div class="profile-name">[Company Name]</div>
+                    <div class="profile-stage">Growth</div>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Founded</div>
+                        <div class="detail-value">2021</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Funding</div>
+                        <div class="detail-value">$[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Key Metric</div>
+                        <div class="detail-value">[ARR/Users/GMV]: $[X]M</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Leadership</div>
+                        <div class="detail-value">[Name], [Title]</div>
+                    </div>
+                </div>
+                <div class="profile-description">
+                    <p>[1-2 paragraph description.]</p>
+                </div>
+            </div>
+
+            <!-- COMPARISON TABLE -->
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Stage</th>
+                        <th>Key Metric</th>
+                        <th>Positioning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>[Company A]</strong></td>
+                        <td>Series B</td>
+                        <td>$[X]M ARR</td>
+                        <td>Platform leader</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Company B]</strong></td>
+                        <td>Series A</td>
+                        <td>$[X]M ARR</td>
+                        <td>Vertical application</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Company C]</strong></td>
+                        <td>Growth</td>
+                        <td>$[X]M GMV</td>
+                        <td>Distribution & aggregation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- INVESTMENT IMPLICATIONS -->
+        <div class="section">
+            <h2 class="section-title">Investment Implications</h2>
+
+            <div class="implications-box">
+                <h4>Our Conviction Levels</h4>
+                <div>
+                    <span class="conviction-level conviction-high">High Conviction</span>
+                    <span class="conviction-level conviction-medium">Medium Conviction</span>
+                    <span class="conviction-level conviction-low">Low Conviction</span>
+                </div>
+            </div>
+
+            <div class="section-subtitle">What We're Looking For</div>
+            <div class="implications-box">
+                <ul>
+                    <li><strong>Founder-Market Fit:</strong> Founders with deep domain expertise or contrarian insights into the sector.</li>
+                    <li><strong>Network/Data Moat:</strong> Defensible unit economics with network effects or proprietary data advantages.</li>
+                    <li><strong>Disciplined Unit Economics:</strong> Path to 40%+ gross margins with sub-3 year CAC payback.</li>
+                    <li><strong>Regulatory Tailwinds:</strong> Expansion into regulated verticals with emerging compliance infrastructure.</li>
+                </ul>
+            </div>
+
+            <div class="section-subtitle">What We're Avoiding</div>
+            <div class="implications-box">
+                <ul>
+                    <li><strong>Commodity Platforms:</strong> Undifferentiated infrastructure plays in crowded subsectors.</li>
+                    <li><strong>Bottom-Up Scaling Plays:</strong> Companies betting entirely on viral growth or consumer adoption without clear B2B defensibility.</li>
+                    <li><strong>Dependent Ecosystems:</strong> Businesses with concentration risk (>30% customer concentration or platform dependency).</li>
+                    <li><strong>Pre-Product Conviction:</strong> Thesis-stage companies without demonstrated customer validation in target segment.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DATA APPENDIX -->
+        <div class="section">
+            <h2 class="section-title">Data Appendix</h2>
+
+            <div class="section-subtitle">Funding Trends</div>
+            <table class="appendix-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Number of Deals</th>
+                        <th>Total Funding ($M)</th>
+                        <th>Avg. Deal Size ($M)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2020</td>
+                        <td>[X]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                    </tr>
+                    <tr>
+                        <td>2021</td>
+                        <td>[X]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                    </tr>
+                    <tr>
+                        <td>2022</td>
+                        <td>[X]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                    </tr>
+                    <tr>
+                        <td>2023</td>
+                        <td>[X]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                    </tr>
+                    <tr>
+                        <td>2024-2026 (YTD)</td>
+                        <td>[X]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="section-subtitle">Valuation Comps</div>
+            <table class="appendix-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Stage</th>
+                        <th>Valuation ($M)</th>
+                        <th>ARR ($M)</th>
+                        <th>ARR Multiple</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>[Company A]</td>
+                        <td>Series B</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                        <td>[X]x</td>
+                    </tr>
+                    <tr>
+                        <td>[Company B]</td>
+                        <td>Series C</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                        <td>[X]x</td>
+                    </tr>
+                    <tr>
+                        <td>[Company C]</td>
+                        <td>Growth</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                        <td>[X]x</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="section-subtitle">Market Sizing</div>
+            <table class="appendix-table">
+                <thead>
+                    <tr>
+                        <th>Segment</th>
+                        <th>2024 TAM ($B)</th>
+                        <th>2026E TAM ($B)</th>
+                        <th>CAGR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>[Segment A]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                        <td>[X]%</td>
+                    </tr>
+                    <tr>
+                        <td>[Segment B]</td>
+                        <td>$[X]</td>
+                        <td>$[X]</td>
+                        <td>[X]%</td>
+                    </tr>
+                    <tr>
+                        <td>Total TAM</td>
+                        <td><strong>$[X]</strong></td>
+                        <td><strong>$[X]</strong></td>
+                        <td><strong>[X]%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SOURCES & METHODOLOGY -->
+        <div class="section">
+            <h2 class="section-title">Sources & Methodology</h2>
+
+            <div class="sources">
+                <h3 style="font-family: 'Helvetica Neue', 'PingFang SC', sans-serif; margin-bottom: 16px;">Primary Sources</h3>
+                <ol>
+                    <li>[Company interview or investor call] — [Date]</li>
+                    <li>[Industry report] — [Source], [Date]</li>
+                    <li>[Market research data] — [Source], [Date]</li>
+                    <li>[Regulatory filing or press release] — [Source], [Date]</li>
+                    <li>[Academic or third-party research] — [Source], [Date]</li>
+                </ol>
+
+                <h3 style="font-family: 'Helvetica Neue', 'PingFang SC', sans-serif; margin-bottom: 16px; margin-top: 20px;">Methodology Notes</h3>
+                <p>This analysis is based on [X] months of primary research, [X] industry interviews, and benchmarking against public market comparables. Market sizing estimates are derived from [specify source: TAM methodologies, bottom-up unit economics, top-down addressable market analysis]. Funding data sourced from [Crunchbase/PitchBook/internal tracking] as of [date]. Valuation multiples reflect [trailing twelve months / forward] figures and should be interpreted within the context of market cycle dynamics.</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>[Fund Name] Research</strong></p>
+            <p>Published: March 2026</p>
+            <div class="footer-disclaimer">
+                <p>This research is for informational purposes only and should not be construed as investment advice. Past performance is not indicative of future results. All information is believed to be accurate but is not guaranteed. © 2026 [Fund Name]. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

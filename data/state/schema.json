@@ -1,0 +1,936 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fund OS State Schema",
+  "description": "JSON Schema definitions for all state files in the VC Fund OS",
+  "definitions": {
+    "iso8601_datetime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "description": "ISO 8601 datetime in UTC (YYYY-MM-DDTHH:MM:SSZ)"
+    },
+    "iso8601_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date (YYYY-MM-DD)"
+    },
+    "deal_object": {
+      "type": "object",
+      "required": [
+        "deal_id",
+        "company",
+        "sector",
+        "stage",
+        "status",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "deal_id": {
+          "type": "string",
+          "description": "Unique deal identifier (e.g., 'deal-acme-20260403')"
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "sector": {
+          "type": "string",
+          "enum": [
+            "SaaS",
+            "AI/ML",
+            "Fintech",
+            "Healthtech",
+            "Deeptech",
+            "Infrastructure",
+            "Semiconductors",
+            "Other"
+          ],
+          "description": "Primary sector"
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "Pre-seed",
+            "Seed",
+            "Series A",
+            "Series B",
+            "Series C",
+            "Series D",
+            "Series E+",
+            "Growth",
+            "Public"
+          ],
+          "description": "Current funding stage"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Sourced",
+            "Screening",
+            "DD",
+            "Term Sheet",
+            "Invested",
+            "Passed",
+            "Archived"
+          ],
+          "description": "Deal status"
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Internal investment score"
+        },
+        "entry_valuation_usd": {
+          "type": "number",
+          "description": "Entry valuation in USD (millions)"
+        },
+        "check_size_usd": {
+          "type": "number",
+          "description": "Target check size in USD (millions)"
+        },
+        "check_size_pct_ownership": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Target ownership percentage"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "Outbound",
+            "Inbound",
+            "Warm intro",
+            "Accelerator",
+            "Secondary",
+            "Broker",
+            "Proprietary",
+            "Direct",
+            "GitHub sourcing",
+            "Funding scanner",
+            "Report harvester",
+            "Proactive sourcing",
+            "Other"
+          ],
+          "description": "How deal was sourced"
+        },
+        "sourcing_context": {
+          "type": "string",
+          "description": "Additional context from proactive sourcing (e.g., GitHub repo URL, funding round details)"
+        },
+        "assignee": {
+          "type": "string",
+          "description": "Team member leading this deal"
+        },
+        "screened_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "next_action": {
+          "type": "string",
+          "description": "Next step in deal process"
+        },
+        "next_action_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "notes_path": {
+          "type": "string",
+          "description": "Path to detailed notes.md file"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "portfolio_company_object": {
+      "type": "object",
+      "required": [
+        "portfolio_id",
+        "company",
+        "sector",
+        "initial_investment_date",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "portfolio_id": {
+          "type": "string",
+          "description": "Unique portfolio identifier"
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "entity_name": {
+          "type": "string",
+          "description": "Legal entity name"
+        },
+        "sector": {
+          "type": "string",
+          "enum": [
+            "SaaS",
+            "AI/ML",
+            "Fintech",
+            "Healthtech",
+            "Deeptech",
+            "Infrastructure",
+            "Semiconductors",
+            "Other"
+          ]
+        },
+        "stage_at_investment": {
+          "type": "string",
+          "enum": [
+            "Pre-seed",
+            "Seed",
+            "Series A",
+            "Series B",
+            "Series C",
+            "Series D",
+            "Series E+",
+            "Growth"
+          ],
+          "description": "Stage when we invested"
+        },
+        "initial_investment_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "initial_check_usd": {
+          "type": "number",
+          "description": "First check size in USD (millions)"
+        },
+        "initial_ownership_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "First ownership stake %"
+        },
+        "current_valuation_usd": {
+          "type": "number",
+          "description": "Latest post-money valuation in USD (millions)"
+        },
+        "valuation_source": {
+          "type": "string",
+          "enum": [
+            "DCF",
+            "Comps",
+            "409A",
+            "Recent round",
+            "Management estimate",
+            "Other"
+          ],
+          "description": "How valuation was determined"
+        },
+        "valuation_confidence": {
+          "type": "string",
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "Confidence level in valuation"
+        },
+        "last_valuation_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_kpi_update_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "board_seat": {
+          "type": "boolean",
+          "description": "Whether we have board representation"
+        },
+        "next_board_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "runway_months": {
+          "type": "number",
+          "description": "Estimated months of cash runway"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Follow-on needed",
+            "Monitoring",
+            "Exiting",
+            "Exited"
+          ]
+        },
+        "health_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Overall health score"
+        },
+        "key_risks": {
+          "type": "string",
+          "description": "Critical risks (pipe-separated)"
+        },
+        "notes_path": {
+          "type": "string",
+          "description": "Path to detailed notes"
+        },
+        "fund": {
+          "type": "string",
+          "description": "Fund that made the investment (e.g., 'Fund Alpha LP')"
+        },
+        "investment_type": {
+          "type": "string",
+          "description": "Investment instrument (SAFE, Series X Preferred, Secondary, etc.)"
+        },
+        "investment_cost_usd_mn": {
+          "type": "number",
+          "description": "Total cost basis in USD millions"
+        },
+        "appraised_value_usd_mn": {
+          "type": "number",
+          "description": "Current appraised investment value in USD millions"
+        },
+        "return": {
+          "type": "string",
+          "description": "Return percentage (e.g., '265.18%')"
+        },
+        "report_path": {
+          "type": "string",
+          "description": "Path to latest valuation report"
+        },
+        "initial_investment_date_raw": {
+          "type": ["string", "null"],
+          "description": "Original date text from report (when ISO parsing differs from source)"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "research_object": {
+      "type": "object",
+      "required": [
+        "research_id",
+        "slug",
+        "type",
+        "title_en",
+        "title_cn",
+        "status",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "research_id": {
+          "type": "string",
+          "description": "Unique research identifier"
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL-friendly slug"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Market Note",
+            "Company Teardown",
+            "GP Letter",
+            "Thematic Research",
+            "Sector Deep Dive"
+          ],
+          "description": "Publication type"
+        },
+        "title_en": {
+          "type": "string",
+          "description": "English title"
+        },
+        "title_cn": {
+          "type": "string",
+          "description": "Chinese title"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Idea",
+            "Researching",
+            "Outlining",
+            "Drafting",
+            "Review",
+            "Translating",
+            "FinalReview",
+            "Ready",
+            "Published"
+          ],
+          "description": "Workflow status"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        "assigned_to": {
+          "type": "string",
+          "description": "Author or owner"
+        },
+        "en_path": {
+          "type": "string",
+          "description": "Path to English draft or published version"
+        },
+        "cn_path": {
+          "type": "string",
+          "description": "Path to Chinese translation"
+        },
+        "wechat_formatted_path": {
+          "type": "string",
+          "description": "Path to WeChat-formatted version"
+        },
+        "linkedin_formatted_path": {
+          "type": "string",
+          "description": "Path to LinkedIn-formatted version"
+        },
+        "wechat_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Published WeChat URL"
+        },
+        "linkedin_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Published LinkedIn URL"
+        },
+        "engagement_wechat_views": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "WeChat views"
+        },
+        "engagement_wechat_likes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "WeChat likes"
+        },
+        "engagement_linkedin_views": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "LinkedIn views"
+        },
+        "engagement_linkedin_likes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "LinkedIn likes"
+        },
+        "engagement_linkedin_shares": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "LinkedIn shares"
+        },
+        "target_publish_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "idea_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "outline_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "draft_complete_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "review_complete_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "published_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "published_by": {
+          "type": "string",
+          "description": "Who approved publication"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Internal research notes"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "lp_object": {
+      "type": "object",
+      "required": [
+        "lp_id",
+        "name",
+        "commitment_usd",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "lp_id": {
+          "type": "string",
+          "description": "Unique LP identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "LP name (anonymized in shared contexts)"
+        },
+        "entity_type": {
+          "type": "string",
+          "enum": [
+            "Individual",
+            "Fund",
+            "Family Office",
+            "Corporate",
+            "University",
+            "Other"
+          ]
+        },
+        "commitment_usd": {
+          "type": "number",
+          "description": "Total LP commitment in USD (millions)"
+        },
+        "called_usd": {
+          "type": "number",
+          "description": "Amount called to date in USD"
+        },
+        "called_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage called"
+        },
+        "last_communication_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_communication_type": {
+          "type": "string",
+          "enum": [
+            "Email",
+            "Call",
+            "Board meeting",
+            "Distribution",
+            "Capital call",
+            "Other"
+          ]
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Primary contact email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Primary contact phone"
+        },
+        "secondary_contact_name": {
+          "type": "string"
+        },
+        "secondary_contact_email": {
+          "type": "string",
+          "format": "email"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Inactive",
+            "Under review"
+          ]
+        },
+        "location_country": {
+          "type": "string",
+          "description": "LP country"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Internal notes (handle sensitive data with caution)"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "compliance_object": {
+      "type": "object",
+      "required": [
+        "compliance_id",
+        "item",
+        "category",
+        "deadline",
+        "status",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "compliance_id": {
+          "type": "string",
+          "description": "Unique compliance item identifier"
+        },
+        "item": {
+          "type": "string",
+          "description": "Compliance item name"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "SEC",
+            "State",
+            "Fund",
+            "Tax",
+            "LP",
+            "Other"
+          ],
+          "description": "Compliance category"
+        },
+        "deadline": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "days_until_due": {
+          "type": "integer",
+          "description": "Auto-calculated days remaining"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Not started",
+            "In progress",
+            "Complete",
+            "Overdue"
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "description": "Team member responsible"
+        },
+        "filing_ref": {
+          "type": "string",
+          "description": "Reference doc path or ID"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Notes or escalation info"
+        },
+        "completed_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "public_holding_object": {
+      "type": "object",
+      "required": [
+        "position_id",
+        "ticker",
+        "company",
+        "sector",
+        "position_type",
+        "created_date",
+        "last_updated"
+      ],
+      "properties": {
+        "position_id": {
+          "type": "string",
+          "description": "Unique position identifier"
+        },
+        "ticker": {
+          "type": "string",
+          "description": "Stock ticker symbol"
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "sector": {
+          "type": "string",
+          "enum": [
+            "SaaS",
+            "AI/ML",
+            "Fintech",
+            "Healthtech",
+            "Deeptech",
+            "Infrastructure",
+            "Semiconductors",
+            "Other"
+          ]
+        },
+        "position_type": {
+          "type": "string",
+          "enum": [
+            "Held",
+            "Monitored",
+            "Peer comp"
+          ],
+          "description": "Position type"
+        },
+        "shares_held": {
+          "type": "number",
+          "description": "Number of shares (if held)"
+        },
+        "cost_basis_per_share": {
+          "type": "number",
+          "description": "Cost basis per share in USD"
+        },
+        "current_price": {
+          "type": "number",
+          "description": "Latest market price in USD"
+        },
+        "price_update_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "market_cap_usd": {
+          "type": "number",
+          "description": "Latest market cap in USD (billions)"
+        },
+        "earnings_date": {
+          "$ref": "#/definitions/iso8601_date",
+          "description": "Next earnings announcement date"
+        },
+        "latest_eps": {
+          "type": "number",
+          "description": "Latest reported EPS"
+        },
+        "pe_ratio": {
+          "type": "number",
+          "description": "Latest P/E ratio"
+        },
+        "dividend_yield_pct": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Dividend yield %"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Research notes or tracking rationale"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    },
+    "watchlist_object": {
+      "type": "object",
+      "required": [
+        "watchlist_id",
+        "company",
+        "sector",
+        "reason",
+        "added_date",
+        "last_updated"
+      ],
+      "properties": {
+        "watchlist_id": {
+          "type": "string",
+          "description": "Unique watchlist item identifier"
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "description": "Company website URL"
+        },
+        "sector": {
+          "type": "string",
+          "enum": [
+            "SaaS",
+            "AI/ML",
+            "Fintech",
+            "Healthtech",
+            "Deeptech",
+            "Infrastructure",
+            "Semiconductors",
+            "Other"
+          ]
+        },
+        "stage_estimated": {
+          "type": "string",
+          "enum": [
+            "Pre-seed",
+            "Seed",
+            "Series A",
+            "Series B",
+            "Series C",
+            "Series D",
+            "Series E+",
+            "Growth",
+            "Public",
+            "Unknown"
+          ],
+          "description": "Estimated stage"
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "Sector peer",
+            "Pipeline target",
+            "Competitive threat",
+            "Market trend",
+            "Portfolio monitoring",
+            "GitHub trending",
+            "Recent funding",
+            "Accelerator graduate",
+            "Proactive sourcing",
+            "Other"
+          ],
+          "description": "Why we're watching"
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "Manual",
+            "GitHub Signal",
+            "Funding Round",
+            "Report/Accelerator",
+            "Deal Sourcing Scan"
+          ],
+          "description": "How this watchlist entry was discovered"
+        },
+        "sourcing_signals": {
+          "type": "object",
+          "description": "Structured signals from proactive sourcing",
+          "properties": {
+            "github_url": {
+              "type": "string",
+              "description": "Primary GitHub repo URL"
+            },
+            "github_stars": {
+              "type": "integer",
+              "description": "Star count at time of discovery"
+            },
+            "github_stars_velocity": {
+              "type": "string",
+              "description": "Star growth rate (e.g., '+2.3K/month', '+500/week')"
+            },
+            "github_contributors": {
+              "type": "integer",
+              "description": "Number of contributors"
+            },
+            "funding_round": {
+              "type": "string",
+              "description": "Latest known round (e.g., 'Series A')"
+            },
+            "funding_amount": {
+              "type": "string",
+              "description": "Amount raised (e.g., '$15M')"
+            },
+            "funding_date": {
+              "$ref": "#/definitions/iso8601_date"
+            },
+            "funding_investors": {
+              "type": "string",
+              "description": "Key investors (comma-separated)"
+            },
+            "report_source": {
+              "type": "string",
+              "description": "Where this company was flagged (e.g., 'YC W26 Demo Day', 'TechCrunch', 'a16z portfolio')"
+            },
+            "signal_strength": {
+              "type": "string",
+              "enum": ["High", "Medium", "Low"],
+              "description": "Overall signal quality assessment"
+            },
+            "discovery_date": {
+              "$ref": "#/definitions/iso8601_date"
+            }
+          }
+        },
+        "pre_screen_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Lightweight pre-screen score (0-5) before full deal-screen"
+        },
+        "added_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_checked_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "key_metrics_tracked": {
+          "type": "string",
+          "description": "What we monitor (comma-separated)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Latest observations"
+        },
+        "created_date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "last_updated": {
+          "$ref": "#/definitions/iso8601_datetime"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "deals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/deal_object"
+      },
+      "description": "Deal opportunity pipeline"
+    },
+    "portfolio": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/portfolio_company_object"
+      },
+      "description": "Active portfolio companies"
+    },
+    "research": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/research_object"
+      },
+      "description": "Research publication pipeline"
+    },
+    "lps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/lp_object"
+      },
+      "description": "Limited partner database"
+    },
+    "compliance": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/compliance_object"
+      },
+      "description": "Compliance calendar and filings"
+    },
+    "public_holdings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/public_holding_object"
+      },
+      "description": "Public company positions and tracking"
+    },
+    "watchlist": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/watchlist_object"
+      },
+      "description": "Company watchlist for research and sourcing"
+    }
+  }
+}

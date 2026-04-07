@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Insight Letter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            background-color: #fafafa;
+            color: #2c2c2c;
+            line-height: 1.72;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 677px;
+            margin: 0 auto;
+            padding: 48px 20px;
+            background-color: white;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 48px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 36px;
+        }
+
+        .brand {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #4361ee;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .letter-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .author-line {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .author-title {
+            color: #999;
+            font-style: italic;
+        }
+
+        .meta {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 0.5px;
+        }
+
+        .meta span {
+            margin-right: 24px;
+        }
+
+        /* OPENING PROVOCATION */
+        .provocation {
+            margin-bottom: 48px;
+            padding: 32px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .provocation-quote {
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            font-size: 24px;
+            font-weight: 400;
+            font-style: italic;
+            color: #1a1a2e;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .provocation-line {
+            height: 1px;
+            background-color: #f4a261;
+            width: 60px;
+            margin-top: 20px;
+        }
+
+        /* SECTION STRUCTURE */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .section-title.small {
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+            font-weight: 600;
+        }
+
+        .section-text {
+            font-size: 17px;
+            line-height: 1.75;
+            color: #2c2c2c;
+        }
+
+        .section-text p {
+            margin-bottom: 18px;
+        }
+
+        .section-text strong {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .section-text em {
+            font-style: italic;
+            color: #555;
+        }
+
+        /* PULL QUOTE */
+        .pullquote {
+            background-color: #f0f4ff;
+            border-left: 4px solid #4361ee;
+            padding: 32px 24px;
+            margin: 32px 0;
+            border-radius: 2px;
+        }
+
+        .pullquote-text {
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            font-size: 20px;
+            font-style: italic;
+            color: #1a1a2e;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .pullquote-attribution {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* FRAMEWORK SECTION */
+        .framework {
+            background-color: #fafafa;
+            padding: 28px;
+            border-radius: 2px;
+            margin: 24px 0;
+        }
+
+        .framework-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .framework-box {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            border-radius: 2px;
+        }
+
+        .framework-box-title {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .framework-box-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .framework-explanation {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2c2c2c;
+        }
+
+        /* IMPLICATIONS LISTS */
+        .implications-section {
+            margin-bottom: 32px;
+        }
+
+        .implications-section h3 {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            text-transform: capitalize;
+        }
+
+        .implications-list {
+            list-style: none;
+        }
+
+        .implications-list li {
+            margin-bottom: 16px;
+            padding-left: 0;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2c2c2c;
+        }
+
+        .implications-list li strong {
+            display: block;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        /* DATA CALLOUT */
+        .data-point {
+            background-color: #fff8f0;
+            border-left: 4px solid #e76f51;
+            padding: 18px 20px;
+            margin: 20px 0;
+            border-radius: 2px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .data-point strong {
+            color: #e76f51;
+            font-weight: 700;
+        }
+
+        /* PORTFOLIO REFERENCE */
+        .portfolio-reference {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 2px;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2c2c2c;
+        }
+
+        .portfolio-reference em {
+            font-style: italic;
+            color: #666;
+        }
+
+        /* CLOSING */
+        .closing {
+            font-size: 17px;
+            line-height: 1.75;
+            color: #2c2c2c;
+            margin-bottom: 32px;
+        }
+
+        .closing p {
+            margin-bottom: 18px;
+        }
+
+        .sign-off {
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            font-size: 15px;
+            color: #666;
+            font-weight: 500;
+            margin-top: 32px;
+        }
+
+        .sign-off-name {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid #e0e0e0;
+            margin-top: 48px;
+            padding-top: 28px;
+            font-size: 13px;
+            color: #999;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            line-height: 1.7;
+        }
+
+        .footer-content {
+            margin-bottom: 20px;
+        }
+
+        .footer-content strong {
+            display: block;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .footer-disclaimer {
+            font-size: 12px;
+            color: #bbb;
+            background-color: #fafafa;
+            padding: 16px;
+            border-radius: 2px;
+            line-height: 1.6;
+        }
+
+        /* UTILITIES */
+        a {
+            color: #4361ee;
+            text-decoration: none;
+            border-bottom: 1px solid #4361ee;
+        }
+
+        a:hover {
+            color: #f4a261;
+            border-color: #f4a261;
+        }
+
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        blockquote {
+            margin: 24px 0;
+            padding: 24px;
+            border-left: 4px solid #4361ee;
+            background-color: #f0f4ff;
+            border-radius: 2px;
+            font-style: italic;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            html {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 32px 16px;
+            }
+
+            .letter-title {
+                font-size: 26px;
+            }
+
+            .provocation-quote {
+                font-size: 20px;
+            }
+
+            .pullquote-text {
+                font-size: 18px;
+            }
+
+            .section-text {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .container {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            a {
+                color: #4361ee;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">GP Insight</div>
+            <h1 class="letter-title">[Insert Provocative Thesis Title Here]</h1>
+            <div class="author-line">
+                By <span style="font-weight: 700;">[GP Name]</span>, <span class="author-title">General Partner</span>
+            </div>
+            <div class="meta">
+                <span>March 2026</span>
+                <span>Issue #[X]</span>
+            </div>
+        </div>
+
+        <!-- OPENING PROVOCATION -->
+        <div class="provocation">
+            <div class="provocation-quote">
+                "[Your bold, contrarian claim about a widely held belief in venture capital, technology, or markets. This should challenge conventional wisdom and compel the reader to keep going.]"
+            </div>
+            <div class="provocation-line"></div>
+        </div>
+
+        <!-- THE CONVENTIONAL WISDOM -->
+        <div class="section">
+            <h2 class="section-title">The Conventional Wisdom</h2>
+            <div class="section-text">
+                <p>Most people in venture capital believe [common thesis]. The narrative goes something like this: [summarize the mainstream view with 2-3 key points]. This belief is reinforced by [recent market data, high-profile exits, sector trends]. It makes intuitive sense: [explain why the conventional wisdom feels right].</p>
+                <p>For years, this assumption shaped how we—and most of the market—allocated capital. We believed [restate conventional wisdom]. We built models around it. We passed on deals that didn't fit the narrative.</p>
+            </div>
+        </div>
+
+        <!-- WHY IT'S WRONG -->
+        <div class="section">
+            <h2 class="section-title">Why It's Wrong</h2>
+            <div class="section-text">
+                <p>But the data tells a different story. When you look closely, [present data or observation that contradicts consensus]. In fact, [provide evidence: markets, historical examples, underlying metrics]. [Reference specific company, founder archetype, or market segment that disproves the conventional wisdom].</p>
+
+                <div class="pullquote">
+                    <div class="pullquote-text">"[Pull out the most important insight or surprising data point as a large, italicized quote. This should be memorable and memorable enough to send in a group chat.]"</div>
+                    <div class="pullquote-attribution">— [Optional source or reference]</div>
+                </div>
+
+                <p>What's more, [add a second or third layer of evidence]. The implication is profound: [hint at why this matters for capital allocation, but don't spell it out yet].</p>
+            </div>
+        </div>
+
+        <!-- THE FRAMEWORK -->
+        <div class="section">
+            <h2 class="section-title">The Framework</h2>
+            <div class="framework">
+                <div class="framework-title">[Name Your Framework]</div>
+                <div class="framework-grid">
+                    <div class="framework-box">
+                        <div class="framework-box-title">[Dimension 1]</div>
+                        <div class="framework-box-desc">[Brief description of the first axis or variable]</div>
+                    </div>
+                    <div class="framework-box">
+                        <div class="framework-box-title">[Dimension 2]</div>
+                        <div class="framework-box-desc">[Brief description of the second axis or variable]</div>
+                    </div>
+                    <div class="framework-box">
+                        <div class="framework-box-title">[Dimension 3]</div>
+                        <div class="framework-box-desc">[Brief description of the third axis or variable]</div>
+                    </div>
+                    <div class="framework-box">
+                        <div class="framework-box-title">[Dimension 4]</div>
+                        <div class="framework-box-desc">[Brief description of the fourth axis or variable]</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-text">
+                <p>This framework helps us think systematically about [the core problem you're solving]. Rather than relying on narratives or herd behavior, we can map companies and founders against these dimensions and ask: [pose a key question that this framework answers].</p>
+                <p>The winners in [sector/stage] aren't necessarily the ones with the biggest Series A or the most impressive bench of advisors. They're the ones who [articulate the winner's advantage according to your framework]. This shifts where we look for value: [explain investment implications of the framework].</p>
+            </div>
+        </div>
+
+        <!-- IMPLICATIONS -->
+        <div class="section">
+            <h2 class="section-title">Implications</h2>
+
+            <div class="implications-section">
+                <h3>For Founders</h3>
+                <ul class="implications-list">
+                    <li>
+                        <strong>First Implication for Founders:</strong>
+                        [Actionable insight about how founders in this space should think about product, positioning, hiring, or capital strategy based on your thesis. This should be 2-3 sentences.]
+                    </li>
+                    <li>
+                        <strong>Second Implication for Founders:</strong>
+                        [Second insight about what founders should prioritize or de-prioritize to win in this environment.]
+                    </li>
+                    <li>
+                        <strong>Third Implication for Founders:</strong>
+                        [Third insight, if applicable. Focus on the most important 2-3 implications, not 10.]
+                    </li>
+                </ul>
+            </div>
+
+            <div class="implications-section">
+                <h3>For Investors</h3>
+                <ul class="implications-list">
+                    <li>
+                        <strong>Reconsider Your Thesis:</strong>
+                        [How should other investors rethink their investment criteria or sector focus based on your argument? This is a chance to be provocative.]
+                    </li>
+                    <li>
+                        <strong>Follow the Data, Not the Narrative:</strong>
+                        [What metrics or signals should investors look for that the market is currently ignoring? What's the leading indicator that the conventional wisdom is breaking?]
+                    </li>
+                    <li>
+                        <strong>Timing Matters:</strong>
+                        [Why is *now* the right time to act on this insight? What's the window, and how long does it last? This creates urgency.]
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- WHAT WE'RE DOING ABOUT IT -->
+        <div class="section">
+            <h2 class="section-title">What We're Doing About It</h2>
+            <div class="section-text">
+                <p>This thinking shapes how we deploy capital. Over the last [X] months, we've [describe specific investment activities that demonstrate your conviction: sector focus, founder archetype, round size, etc.]. We're backing [anonymized portfolio reference: "a Series A platform in [sector]"] that exemplifies this thesis: [explain why this company proves the point].</p>
+
+                <div class="portfolio-reference">
+                    <strong>Case Study (Anonymized):</strong> One of our recent investments in <em>[sector/subsector]</em> was founded by [archetype of founder], brought a contrarian approach to [problem], and is winning because [explain how they win according to your framework, not conventional wisdom]. Their growth trajectory has validated our thesis.
+                </div>
+
+                <p>We're also seeing [mention market signals or founder behaviors that reinforce your thesis]. This reinforces our conviction that [restate your core thesis simply].</p>
+            </div>
+        </div>
+
+        <!-- CLOSING -->
+        <div class="closing">
+            <p>The best venture returns come from seeing what others miss, believing it early, and acting with conviction. Right now, the market is sleeping on [restate your core claim briefly]. The window won't stay open forever.</p>
+            <p>If you're a founder building in this space, or an investor rethinking your thesis—let's talk.</p>
+
+            <div class="sign-off">
+                Until next quarter,
+                <div class="sign-off-name">[Your Name]</div>
+                <div>[Your Title], [Fund Name]</div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-content">
+                <strong>[Fund Name]</strong>
+                <span>[Fund Description: e.g., "A $[X]M cross-stage fund investing in [sectors/geographies]"]</span>
+            </div>
+            <div class="footer-disclaimer">
+                <strong>Disclaimer:</strong> This letter represents the personal views of the author and does not constitute an offer to sell or solicitation to buy any securities. Past performance is not indicative of future results. Any investment in securities involves the risk of loss. This letter is intended for sophisticated investors and accredited investors only. All information is believed to be accurate but is not guaranteed. © 2026 [Fund Name]. All rights reserved.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

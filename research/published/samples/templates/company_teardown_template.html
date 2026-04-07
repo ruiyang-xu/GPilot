@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Company Teardown - [COMPANY NAME]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Noto Serif SC', serif;
+            background-color: #fafafa;
+            color: #333;
+            font-size: 17px;
+            line-height: 1.6;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 677px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            border-bottom: 3px solid #1a1a2e;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .brand {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #4361ee;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .series-label {
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e76f51;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .company-name {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .tagline {
+            font-family: Georgia, 'Noto Serif SC', serif;
+            font-size: 17px;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .meta {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta span::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background-color: #4361ee;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .meta span:first-child::before {
+            display: none;
+        }
+
+        /* ========== COMPANY SNAPSHOT CARD ========== */
+        .section-title {
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4361ee;
+        }
+
+        .snapshot-card {
+            background-color: #f9f9f9;
+            border-left: 4px solid #4361ee;
+            padding: 24px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            font-size: 15px;
+        }
+
+        .snapshot-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .snapshot-label {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4361ee;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .snapshot-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a2e;
+            line-height: 1.4;
+        }
+
+        /* ========== SECTION CONTENT ========== */
+        .section-content {
+            margin: 30px 0;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .section-content strong {
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        .placeholder-text {
+            background-color: #f0f0f0;
+            color: #999;
+            padding: 12px;
+            border-radius: 4px;
+            font-style: italic;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .diagram-placeholder {
+            background-color: #f0f4f8;
+            border: 2px dashed #4361ee;
+            padding: 40px;
+            text-align: center;
+            margin: 24px 0;
+            border-radius: 6px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* ========== MOAT SCORECARD ========== */
+        .moat-scorecard {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+
+        .moat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .moat-row:last-child {
+            border-bottom: none;
+        }
+
+        .moat-label {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 14px;
+            flex: 0 0 35%;
+        }
+
+        .moat-dots {
+            display: flex;
+            gap: 6px;
+            flex: 0 0 25%;
+        }
+
+        .moat-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #d0d0d0;
+            border: 2px solid #999;
+        }
+
+        .moat-dot.filled {
+            background-color: #4361ee;
+            border-color: #4361ee;
+        }
+
+        .moat-description {
+            font-size: 13px;
+            color: #666;
+            flex: 1;
+            text-align: right;
+            padding-left: 12px;
+        }
+
+        /* ========== FINANCIAL TABLES ========== */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        .financial-table th {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .financial-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .financial-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .financial-table td:nth-child(1) {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        /* ========== POSITIONING MATRIX ========== */
+        .matrix-container {
+            margin: 30px 0;
+            background-color: #f9f9f9;
+            padding: 24px;
+            border-radius: 6px;
+        }
+
+        .matrix-axes {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background-color: #d0d0d0;
+            margin-bottom: 20px;
+        }
+
+        .matrix-quadrant {
+            background-color: #ffffff;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            font-size: 13px;
+            color: #999;
+            text-align: center;
+        }
+
+        .matrix-quadrant-label {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .competitor-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .competitor-table th {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #d0d0d0;
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .competitor-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .competitor-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* ========== TEAM SECTION ========== */
+        .founder-card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 16px 0;
+            border-left: 4px solid #f4a261;
+            border-radius: 4px;
+        }
+
+        .founder-name {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .founder-title {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            color: #4361ee;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .founder-background {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ========== BULL/BEAR CASE ========== */
+        .bull-bear-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .case-column {
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .bull-case {
+            background-color: #f0f9f4;
+            border-left: 4px solid #06d6a0;
+        }
+
+        .bear-case {
+            background-color: #fef3f0;
+            border-left: 4px solid #e76f51;
+        }
+
+        .case-title {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .bull-case .case-title {
+            color: #06d6a0;
+        }
+
+        .bear-case .case-title {
+            color: #e76f51;
+        }
+
+        .case-points {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .case-points li {
+            margin-bottom: 10px;
+            color: #333;
+            margin-left: 20px;
+        }
+
+        /* ========== VERDICT BOX ========== */
+        .verdict-box {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c2c54 100%);
+            color: #ffffff;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border-top: 4px solid #4361ee;
+        }
+
+        .verdict-title {
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .verdict-item {
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .verdict-label {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            display: inline-block;
+            width: 100px;
+            color: #4361ee;
+        }
+
+        .verdict-value {
+            font-weight: 600;
+            color: #f4a261;
+        }
+
+        .verdict-rationale {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            border-top: 2px solid #1a1a2e;
+            margin-top: 40px;
+            padding-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .footer-brand {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4361ee;
+            margin-bottom: 12px;
+        }
+
+        .footer-disclaimer {
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .footer-series {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11px;
+            color: #666;
+            margin-top: 16px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 720px) {
+            .container {
+                padding: 16px;
+            }
+
+            .company-name {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .snapshot-card {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .bull-bear-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .moat-row {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .moat-label {
+                flex: 1 100%;
+            }
+
+            .moat-dots {
+                flex: 0 0 auto;
+            }
+
+            .moat-description {
+                flex: 1 100%;
+                text-align: left;
+            }
+
+            .financial-table,
+            .competitor-table {
+                font-size: 12px;
+            }
+
+            .financial-table th,
+            .financial-table td,
+            .competitor-table th,
+            .competitor-table td {
+                padding: 8px;
+            }
+        }
+
+        /* ========== WECHAT COMPATIBILITY ========== */
+        @media (max-width: 480px) {
+            body {
+                font-size: 16px;
+            }
+
+            .company-name {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .verdict-label {
+                width: auto;
+                display: block;
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ========== HEADER ========== -->
+        <div class="header">
+            <div class="brand">[Fund Name] VENTURES RESEARCH</div>
+            <div class="series-label">COMPANY TEARDOWN 独角兽拆解</div>
+            <h1 class="company-name">[COMPANY NAME]</h1>
+            <p class="tagline">[One-line company description: e.g., "The AI-powered platform transforming supply chain visibility for manufacturers globally"]</p>
+            <div class="meta">
+                <span>[Date: 2026-03-30]</span>
+                <span>Reading time: ~12 min</span>
+                <span>Series #[X]</span>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 1: COMPANY SNAPSHOT ========== -->
+        <h2 class="section-title">公司快照</h2>
+        <div class="snapshot-card">
+            <div class="snapshot-item">
+                <div class="snapshot-label">Founded</div>
+                <div class="snapshot-value">[Year, e.g., 2018]</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">HQ Location</div>
+                <div class="snapshot-value">[City, Country]</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Total Funding</div>
+                <div class="snapshot-value">$[XXX]M</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Latest Round</div>
+                <div class="snapshot-value">[Series X, $XXM at $XB]</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Lead Investors</div>
+                <div class="snapshot-value">[Investor 1, Investor 2, Investor 3]</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Employees</div>
+                <div class="snapshot-value">[XXX+]</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Revenue (ARR)</div>
+                <div class="snapshot-value">$[XXX]M (if known)</div>
+            </div>
+            <div class="snapshot-item">
+                <div class="snapshot-label">Sector</div>
+                <div class="snapshot-value">[Category, e.g., Enterprise SaaS]</div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 2: THE BUSINESS ========== -->
+        <h2 class="section-title">业务模式</h2>
+        <div class="section-content">
+            <p><strong>[COMPANY NAME]</strong> <span class="placeholder-text">PLACEHOLDER: Brief overview of what the company does and why it matters — 1-2 sentences that capture the core value prop and urgency.</span></p>
+
+            <p><span class="placeholder-text">PLACEHOLDER: 1-2 paragraphs explaining the market pain point, customer segment, and how the company's product addresses it. Include TAM implications.</span></p>
+
+            <p><span class="placeholder-text">PLACEHOLDER: How the company makes money — pricing model, unit economics, and revenue streams. Reference key metrics like ACV, churn, NRR.</span></p>
+
+            <p><span class="placeholder-text">PLACEHOLDER: Product/market strategy — what makes their go-to-market different? Virality loops, land-and-expand, enterprise playbook, etc.</span></p>
+
+            <div class="diagram-placeholder">
+                [BUSINESS MODEL DIAGRAM: Insert visual showing value chain, customer journey, or revenue waterfall]
+            </div>
+        </div>
+
+        <!-- ========== SECTION 3: MOAT ANALYSIS ========== -->
+        <h2 class="section-title">竞争壁垒评估</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 16px;">
+            <span class="placeholder-text">PLACEHOLDER: Intro paragraph assessing sustainable competitive advantages and durability of defensibility.</span>
+        </p>
+
+        <div class="moat-scorecard">
+            <div class="moat-row">
+                <div class="moat-label">Network Effects</div>
+                <div class="moat-dots">
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot"></div>
+                    <div class="moat-dot"></div>
+                </div>
+                <div class="moat-description"><span class="placeholder-text">1-line explanation</span></div>
+            </div>
+            <div class="moat-row">
+                <div class="moat-label">Switching Costs</div>
+                <div class="moat-dots">
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot"></div>
+                </div>
+                <div class="moat-description"><span class="placeholder-text">1-line explanation</span></div>
+            </div>
+            <div class="moat-row">
+                <div class="moat-label">Data Advantage</div>
+                <div class="moat-dots">
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                </div>
+                <div class="moat-description"><span class="placeholder-text">1-line explanation</span></div>
+            </div>
+            <div class="moat-row">
+                <div class="moat-label">Scale Economics</div>
+                <div class="moat-dots">
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot"></div>
+                    <div class="moat-dot"></div>
+                    <div class="moat-dot"></div>
+                </div>
+                <div class="moat-description"><span class="placeholder-text">1-line explanation</span></div>
+            </div>
+            <div class="moat-row">
+                <div class="moat-label">Brand / Trust</div>
+                <div class="moat-dots">
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot filled"></div>
+                    <div class="moat-dot"></div>
+                    <div class="moat-dot"></div>
+                </div>
+                <div class="moat-description"><span class="placeholder-text">1-line explanation</span></div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 4: FINANCIAL DEEP DIVE ========== -->
+        <h2 class="section-title">财务分析</h2>
+
+        <h3 style="font-family: 'PingFang SC', 'Helvetica Neue', sans-serif; font-size: 16px; font-weight: 600; color: #1a1a2e; margin: 24px 0 16px 0;">Revenue Trajectory</h3>
+        <p style="color: #666; font-size: 14px; margin-bottom: 12px;"><span class="placeholder-text">PLACEHOLDER: 1-2 sentences on revenue growth trajectory, YoY trends, and inflection points.</span></p>
+        <table class="financial-table">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Q1 [Year]</th>
+                    <th>Q2 [Year]</th>
+                    <th>Q3 [Year]</th>
+                    <th>Q4 [Year]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Revenue ($M)</td>
+                    <td>$[X.X]</td>
+                    <td>$[X.X]</td>
+                    <td>$[X.X]</td>
+                    <td>$[X.X]</td>
+                </tr>
+                <tr>
+                    <td>YoY Growth %</td>
+                    <td>[XX]%</td>
+                    <td>[XX]%</td>
+                    <td>[XX]%</td>
+                    <td>[XX]%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="font-family: 'PingFang SC', 'Helvetica Neue', sans-serif; font-size: 16px; font-weight: 600; color: #1a1a2e; margin: 24px 0 16px 0;">Unit Economics</h3>
+        <p style="color: #666; font-size: 14px; margin-bottom: 12px;"><span class="placeholder-text">PLACEHOLDER: Key observations on unit economics sustainability and expansion potential.</span></p>
+        <table class="financial-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Industry Benchmark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CAC (Customer Acquisition Cost)</td>
+                    <td>$[XXX]K</td>
+                    <td>[Compare to peers]</td>
+                </tr>
+                <tr>
+                    <td>LTV (Lifetime Value)</td>
+                    <td>$[XXX]K</td>
+                    <td>[Compare to peers]</td>
+                </tr>
+                <tr>
+                    <td>LTV/CAC Ratio</td>
+                    <td>[X.X]x</td>
+                    <td>[3-5x typical]</td>
+                </tr>
+                <tr>
+                    <td>Payback Period</td>
+                    <td>[X] months</td>
+                    <td>[Industry norm]</td>
+                </tr>
+                <tr>
+                    <td>Gross Margin</td>
+                    <td>[XX]%</td>
+                    <td>[Industry avg]</td>
+                </tr>
+                <tr>
+                    <td>Net Dollar Retention</td>
+                    <td>[XXX]%</td>
+                    <td>[110%+ excellent]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 20px; color: #666;"><span class="placeholder-text">PLACEHOLDER: 2-3 sentences analyzing financial health, profitability path, and potential cash burn/runway.</span></p>
+
+        <!-- ========== SECTION 5: COMPETITIVE LANDSCAPE ========== -->
+        <h2 class="section-title">竞争格局</h2>
+
+        <div class="matrix-container">
+            <div style="margin-bottom: 16px;">
+                <p style="color: #666; font-size: 14px; margin-bottom: 12px;"><span class="placeholder-text">PLACEHOLDER: Brief explanation of positioning matrix dimensions and why they matter.</span></p>
+            </div>
+
+            <div class="matrix-axes">
+                <div style="text-align: left;">← [Dimension 1, e.g., Product Breadth] →</div>
+            </div>
+
+            <div class="matrix-grid">
+                <div class="matrix-quadrant">
+                    <div style="text-align: center;">
+                        <div class="matrix-quadrant-label">High [Dim 2]<br>Low [Dim 1]</div>
+                        <span class="placeholder-text">[Competitor dots]</span>
+                    </div>
+                </div>
+                <div class="matrix-quadrant">
+                    <div style="text-align: center;">
+                        <div class="matrix-quadrant-label">High [Dim 2]<br>High [Dim 1]</div>
+                        <span class="placeholder-text">[Competitor dots + TARGET]</span>
+                    </div>
+                </div>
+                <div class="matrix-quadrant">
+                    <div style="text-align: center;">
+                        <div class="matrix-quadrant-label">Low [Dim 2]<br>Low [Dim 1]</div>
+                        <span class="placeholder-text">[Competitor dots]</span>
+                    </div>
+                </div>
+                <div class="matrix-quadrant">
+                    <div style="text-align: center;">
+                        <div class="matrix-quadrant-label">Low [Dim 2]<br>High [Dim 1]</div>
+                        <span class="placeholder-text">[Competitor dots]</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: #999; margin-top: 12px;">
+                [Dimension 2, e.g., Market Maturity] ↑
+            </div>
+
+            <table class="competitor-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Founded</th>
+                        <th>Funding</th>
+                        <th>Key Strength</th>
+                        <th>Weakness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>[COMPANY NAME]</strong></td>
+                        <td>[Year]</td>
+                        <td>$[XXX]M</td>
+                        <td><span class="placeholder-text">[e.g., AI moat]</span></td>
+                        <td><span class="placeholder-text">[e.g., Go-to-market cost]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Competitor A</strong></td>
+                        <td>[Year]</td>
+                        <td>$[XXX]M</td>
+                        <td><span class="placeholder-text">[Key strength]</span></td>
+                        <td><span class="placeholder-text">[Vulnerability]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Competitor B</strong></td>
+                        <td>[Year]</td>
+                        <td>$[XXX]M</td>
+                        <td><span class="placeholder-text">[Key strength]</span></td>
+                        <td><span class="placeholder-text">[Vulnerability]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Competitor C</strong></td>
+                        <td>[Year]</td>
+                        <td>$[XXX]M</td>
+                        <td><span class="placeholder-text">[Key strength]</span></td>
+                        <td><span class="placeholder-text">[Vulnerability]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ========== SECTION 6: TEAM & CULTURE ========== -->
+        <h2 class="section-title">团队与文化</h2>
+
+        <div class="founder-card">
+            <div class="founder-name">[Founder 1 Name]</div>
+            <div class="founder-title">CEO / Co-Founder</div>
+            <div class="founder-background">
+                <span class="placeholder-text">PLACEHOLDER: Background summary — prior exits, domain expertise, key accomplishments. 2-3 sentences on why they're credible for this problem.</span>
+            </div>
+        </div>
+
+        <div class="founder-card">
+            <div class="founder-name">[Founder 2 Name]</div>
+            <div class="founder-title">CTO / Co-Founder</div>
+            <div class="founder-background">
+                <span class="placeholder-text">PLACEHOLDER: Technical background, relevant prior roles, and product vision alignment.</span>
+            </div>
+        </div>
+
+        <div class="founder-card">
+            <div class="founder-name">[Executive / Hire Name]</div>
+            <div class="founder-title">Head of [Department]</div>
+            <div class="founder-background">
+                <span class="placeholder-text">PLACEHOLDER: Key executive hire — prior experience, functional strength, and impact on business.</span>
+            </div>
+        </div>
+
+        <p style="margin-top: 24px; color: #666;"><span class="placeholder-text">PLACEHOLDER: 1-2 paragraphs on culture, retention rates, and organizational maturity. Reference key signals: board composition, advisory strength, hiring momentum.</span></p>
+
+        <!-- ========== SECTION 7: BULL CASE / BEAR CASE ========== -->
+        <h2 class="section-title">投资论点</h2>
+
+        <div class="bull-bear-container">
+            <div class="case-column bull-case">
+                <div class="case-title">Bull Case</div>
+                <ul class="case-points">
+                    <li><span class="placeholder-text">PLACEHOLDER: Thesis 1 — Market expansion or product momentum argument</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Thesis 2 — Competitive moat or defensibility argument</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Thesis 3 — Financial or exit potential argument</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Thesis 4 (optional) — Management or execution argument</span></li>
+                </ul>
+            </div>
+
+            <div class="case-column bear-case">
+                <div class="case-title">Bear Case</div>
+                <ul class="case-points">
+                    <li><span class="placeholder-text">PLACEHOLDER: Risk 1 — Market adoption or TAM compression risk</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Risk 2 — Competitive threat or moat erosion risk</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Risk 3 — Unit economics or path-to-profitability risk</span></li>
+                    <li><span class="placeholder-text">PLACEHOLDER: Risk 4 (optional) — Execution or talent retention risk</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 8: GP VERDICT ========== -->
+        <h2 class="section-title">基金观点</h2>
+
+        <div class="verdict-box">
+            <div class="verdict-title">投资建议</div>
+
+            <div class="verdict-item">
+                <span class="verdict-label">Rating:</span>
+                <span class="verdict-value">[INVEST / WATCH / PASS]</span>
+            </div>
+
+            <div class="verdict-item">
+                <span class="verdict-label">Conviction:</span>
+                <span class="verdict-value">[HIGH / MEDIUM / LOW]</span>
+            </div>
+
+            <div class="verdict-item">
+                <span class="verdict-label">Target Ownership:</span>
+                <span class="verdict-value">[X]% - [Y]%</span>
+            </div>
+
+            <div class="verdict-rationale">
+                <span class="placeholder-text">PLACEHOLDER: 2-3 sentence summary of the verdict. Synthesize the moat analysis, financial trajectory, and competitive positioning. State the key decision factor — why invest, watch, or pass? What would change the verdict?</span>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 9: APPENDIX PLACEHOLDER ========== -->
+        <h2 class="section-title">附录</h2>
+
+        <p style="color: #666; margin-bottom: 16px;"><span class="placeholder-text">PLACEHOLDER: Opportunity for deeper dives — cap table breakdown, detailed product roadmap, full financial projections, or customer testimonials. Can link to external docs or embed additional tables as needed.</span></p>
+
+        <!-- ========== FOOTER ========== -->
+        <div class="footer">
+            <div class="footer-brand">[FUND NAME] VENTURES RESEARCH</div>
+            <div class="footer-disclaimer">
+                <strong>Disclaimer:</strong> This report is for informational purposes only and does not constitute investment advice. All information is based on publicly available sources and third-party data. Please conduct your own due diligence before making investment decisions.
+            </div>
+            <div class="footer-series">
+                Company Teardown Series | 独角兽拆解<br>
+                Published [Date] | Next issue: [Date]
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -61,5 +61,11 @@ If the answer reveals new connections or insights:
 - Suggest wiki updates (new cross-links, new articles, corrections)
 - If the answer is substantial enough to be reusable, suggest filing it into `wiki/concepts/` or `wiki/sectors/`
 
+### Step 7b: Learnings capture
+If the query process revealed a reusable technique or workaround:
+- Append to `learnings/deep-researcher.md` (or the appropriate agent's learnings file)
+- Examples: specific Perplexity query structures that yielded better results, search strategies that improved coverage, data source quirks discovered
+- Format: date, context, learning, impact, tags
+
 ### Step 8: Output
 Print the answer to the terminal. Save to `output/queries/`.

@@ -16,7 +16,8 @@ Compiles an overnight market summary, today's calendar events, and priority acti
 1. Scan overnight market moves for portfolio-relevant sectors (AI, SaaS, Fintech, Healthtech, Deeptech)
 2. Pull today's calendar events (meetings, IC calls, LP check-ins)
 3. Check `data/state/deals.json` for deals with pending deadlines today
-4. Compile briefing with action items prioritized by urgency
+4. Check `data/state/running-jobs.json` for active multi-session jobs — include in briefing if any are in progress, blocked, or stale (no activity in 48+ hours)
+5. Compile briefing with action items prioritized by urgency
 
 ## Output
 - `output/digests/morning-briefing-{date}.md`

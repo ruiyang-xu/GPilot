@@ -35,8 +35,13 @@
 │   └── state/          ← JSON state (canonical SSOT) + schema
 ├── deals/              ← Per-company folders (notes, models, memos)
 │   ├── {company-a}/    ├── {company-b}/    └── {company-c}/
+├── learnings/          ← Agent processing experience (self-evolving)
+│   ├── _index.md       ← Learnings overview
+│   ├── preferences.md  ← User preferences (auto-learned)
+│   ├── system.md       ← Cross-cutting system learnings
+│   └── {agent}.md      ← Per-agent learnings (9 files)
 ├── agents/             ← 9 AI agent definitions
-├── commands/           ← 16 slash command workflows
+├── commands/           ← 19 slash command workflows
 ├── skills/             ← 7 skill domains (with reference docs)
 ├── templates/          ← 8 document templates
 ├── scheduled/          ← 10 core scheduled tasks
@@ -103,6 +108,9 @@
 | `/lint-wiki` | Wiki health check: stale data, broken links, contradictions |
 | `/weekly-digest` | Weekly intelligence summary |
 | `/sync` | Data synchronization across state files |
+| `/reflect` | Agent self-reflection — review recent work, capture learnings |
+| `/review-learnings` | Curate accumulated learnings — prune, validate, promote |
+| `/jobs` | List, resume, or clean up multi-session running jobs |
 
 > Additional commands in `modules/fund-ops/`: `/lp-quarterly`, `/capital-call`, `/compliance-check`
 
@@ -156,6 +164,8 @@ JSON is the canonical machine-readable state. xlsx in `data/fund/` remains as hu
 | `research.json` | Research pipeline | research-tracker.xlsx |
 | `public_holdings.json` | Public positions | public-companies.xlsx |
 | `watchlist.json` | Watch list | watchlist.xlsx |
+| `running-jobs.json` | Multi-session job tracker | — |
+| `evolution-log.json` | Agent learning audit trail | — |
 | `schema.json` | JSON Schema for all above | — |
 
 **Read/write JSON first**, then optionally regenerate xlsx via `sync-state-to-xlsx.md`. JSON is git-diffable and avoids binary merge conflicts.
@@ -179,6 +189,63 @@ The wiki is a **living, LLM-compiled knowledge graph**. The human drops sources 
 ### The Compounding Effect
 Every query adds to the wiki. Week 1: 5 company articles. Month 3: cross-cutting insights emerge automatically. The wiki becomes the competitive advantage — it knows deal flow history, market patterns, counterparty track records.
 
+### Learnings vs. Wiki
+
+The wiki stores **objective domain knowledge** ("Company X raised $50M Series C"). Learnings store **processing experience** ("When searching for Series C rounds, include the term 'growth round' to catch non-standard naming"). The wiki helps agents know *what*; learnings help agents know *how*. Both compound over time, but learnings are agent-specific while wiki is shared.
+
+## Agent Evolution Framework
+
+GPilot agents are self-evolving. They learn from mistakes, accumulate processing experience, and improve over time — zero external dependencies, all file-based.
+
+### Three-Tier Memory
+
+| Tier | Location | What | Who Writes | When Read |
+|------|----------|------|-----------|-----------|
+| **Preferences** | `learnings/preferences.md` | User corrections, output preferences | Auto after user corrections (2+) | Session start |
+| **Wiki** | `wiki/` | Objective domain facts | `/ingest`, `/query` feedback loop | During research |
+| **Learnings** | `learnings/{agent}.md` | Processing experience, tool tips, workflow tricks | Agent reflection after tasks | Agent startup |
+
+### Session Startup Protocol
+
+At the beginning of every session:
+1. Check `data/state/running-jobs.json` — are there jobs in progress from previous sessions?
+2. If yes, inform the user: "I see {N} jobs in progress: {list}. Want to continue one?"
+3. Read `learnings/preferences.md` for user preferences
+4. When launching any agent, that agent reads its own `learnings/{agent}.md` first
+
+### Reflection Protocol
+
+After completing any multi-step task (commands, agent workflows):
+1. Agent self-assesses: what went well, what was unexpected, what was a workaround?
+2. If a reusable insight was gained, append to `learnings/{agent}.md`
+3. If user corrected output, note the correction pattern in `learnings/preferences.md`
+4. Update `data/state/running-jobs.json`: mark job completed or update progress
+5. If the task produced wiki-worthy facts, suggest wiki updates (existing pattern)
+
+### Running Jobs
+
+Multi-session jobs are tracked in `data/state/running-jobs.json`. Commands like `/research`, `/source-deals`, and `/deal-screen` that may span sessions should:
+- Register a job entry when they start (status: in_progress)
+- Update progress as steps complete
+- Mark completed when finished
+- Mark abandoned if the user cancels
+
+### Evolution Tracking
+
+Agent improvement events are logged to `data/state/evolution-log.json`. This enables periodic review via `/review-learnings` of what agents have learned and how effective their learnings are.
+
+### Evolution Loop
+
+```
+Agent startup → reads learnings (past experience)
+             → reads wiki (domain knowledge)
+             → reads state (current situation)
+             → executes task
+             → auto-updates wiki/state
+             → agent reflects → appends learnings
+             → next session auto-loads this experience
+```
+
 ## Working Conventions
 
 - **Knowledge Base**: Drop sources into `raw/`, run `/ingest`. Query with `/query`. Lint with `/lint-wiki`.
@@ -191,6 +258,9 @@ Every query adds to the wiki. Week 1: 5 company articles. Month 3: cross-cutting
 - **Research**: English first → translate via `skills/translator/` skill → review via `skills/editor/` skill.
 - **Deep research**: Use `skills/deep-researcher/` skill (Perplexity MCP primary) over basic WebSearch.
 - **Fast-track**: For pre-approved Market Notes and Insight Letters, use `/research-fast-track` instead of `/research`.
+- **Learnings**: Agents read `learnings/{agent}.md` on startup. Append new learnings after each task via the Reflection Protocol.
+- **Running Jobs**: Check `data/state/running-jobs.json` at session start for in-progress work.
+- **Preferences**: Check `learnings/preferences.md` for user output and workflow preferences.
 - **Cross-platform**: If symlinks fail (Linux/Windows), use MCP tools per `projects/ACCESS.md`.
 
 ## Cross-Machine Sync

@@ -723,6 +723,132 @@
         }
       }
     },
+    "running_job_object": {
+      "type": "object",
+      "required": [
+        "job_id",
+        "type",
+        "title",
+        "agent",
+        "status",
+        "started_date",
+        "last_activity"
+      ],
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "description": "Unique job identifier (e.g., 'job-research-ai-infra-20260410')"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "research",
+            "deal-screen",
+            "sourcing",
+            "portfolio-review",
+            "memo",
+            "ingest",
+            "sync",
+            "custom"
+          ],
+          "description": "Job type"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable job title"
+        },
+        "agent": {
+          "type": "string",
+          "description": "Primary agent working this job"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "in_progress",
+            "blocked",
+            "waiting_input",
+            "completed",
+            "failed",
+            "abandoned"
+          ],
+          "description": "Current status"
+        },
+        "started_date": {
+          "$ref": "#/definitions/iso8601_datetime"
+        },
+        "last_activity": {
+          "$ref": "#/definitions/iso8601_datetime"
+        },
+        "progress_pct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Estimated completion percentage"
+        },
+        "current_step": {
+          "type": "string",
+          "description": "What step the job is on"
+        },
+        "output_path": {
+          "type": "string",
+          "description": "Where outputs are being written"
+        },
+        "blocking_on": {
+          "type": ["string", "null"],
+          "description": "What this job is waiting for (if blocked)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form progress notes"
+        },
+        "context_files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files relevant to resuming this job"
+        }
+      }
+    },
+    "evolution_log_entry": {
+      "type": "object",
+      "required": [
+        "date",
+        "agent",
+        "event",
+        "description"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/definitions/iso8601_date"
+        },
+        "agent": {
+          "type": "string",
+          "description": "Agent that generated the learning"
+        },
+        "event": {
+          "type": "string",
+          "enum": [
+            "learning_added",
+            "learning_superseded",
+            "preference_captured",
+            "learning_promoted",
+            "learning_archived"
+          ],
+          "description": "Type of evolution event"
+        },
+        "learning_id": {
+          "type": "string",
+          "description": "Short identifier for the learning"
+        },
+        "description": {
+          "type": "string",
+          "description": "What was learned or changed"
+        },
+        "measured_impact": {
+          "type": "string",
+          "description": "Observed impact of the learning (if measurable)"
+        }
+      }
+    },
     "watchlist_object": {
       "type": "object",
       "required": [
@@ -931,6 +1057,20 @@
         "$ref": "#/definitions/watchlist_object"
       },
       "description": "Company watchlist for research and sourcing"
+    },
+    "running_jobs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/running_job_object"
+      },
+      "description": "Jobs in progress across sessions"
+    },
+    "evolution_log": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/evolution_log_entry"
+      },
+      "description": "Agent learning and improvement audit trail"
     }
   }
 }

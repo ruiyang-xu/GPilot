@@ -66,6 +66,13 @@ Report to the user:
 - Conflicts or contradictions found: [list]
 - Update the ingest timestamp at the bottom of `wiki/_summaries.md`
 
+### Ingestion Learning Capture
+If ingestion revealed patterns worth remembering:
+- New file types that required special parsing → append to `learnings/system.md`
+- Entity extraction improvements (e.g., Chinese term patterns, deal structure naming conventions) → append to `learnings/system.md`
+- Wiki structure insights (e.g., articles that should be split or merged) → append to `learnings/system.md`
+- Format: date, context, learning, impact, tags
+
 ## Data Paths
 
 - Read from: `raw/` (never modify these files)

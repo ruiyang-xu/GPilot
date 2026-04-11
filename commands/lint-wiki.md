@@ -46,6 +46,12 @@ Based on the data patterns:
 - Suggest questions worth researching (via `/query`)
 - Identify sectors with many companies but no sector article
 
+### 9. Learnings-Wiki Coherence
+Cross-check learnings against wiki:
+- Check if any active learnings in `learnings/*.md` reference wiki articles that no longer exist
+- Check if learnings suggest wiki articles that should exist but don't
+- Flag learnings that could be "graduated" into wiki content (if a learning captures objective domain knowledge rather than processing experience)
+
 ## Output
 
 Save report to `output/digests/YYYY-MM-DD-wiki-health.md`:

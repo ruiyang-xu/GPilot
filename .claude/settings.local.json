@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import json; json.load\\(open\\('data/state/schema.json'\\)\\); print\\('schema.json: valid JSON'\\)\")"
+    ]
+  }
+}

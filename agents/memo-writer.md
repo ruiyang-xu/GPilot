@@ -73,3 +73,22 @@ After completing a task:
 4. **Jobs**: Update `data/state/running-jobs.json` if this was a tracked job
 
 **Watch for**: Template fit by document type, section length calibration, GP feedback patterns, data presentation preferences
+
+## IC Memo Quality Guardrails
+
+These are NON-NEGOTIABLE for any IC memo or investment document. Apply at draft time, not as a post-hoc check:
+
+1. **Factual + balanced**: Present bull AND bear cases honestly. Steelman the bear case as hard as the bull case. IC members will find weaknesses you minimize — credibility loss is permanent.
+
+2. **No hedging language without numbers**: Replace "potentially significant", "could be material", "may face headwinds" with quantified ranges. If you can't quantify, mark explicitly as `[unquantified — require GP judgment]`.
+
+3. **Math must tie**: Before submitting any memo with financial tables:
+   - EBITDA bridges must reconcile (Revenue × Margin = EBITDA, not approximated)
+   - Sources & Uses must balance (S = U exactly)
+   - Returns math must be consistent (MOIC, IRR, exit assumptions all reconcilable)
+   - Cap table math: pre-money + investment = post-money, dilution percentages sum correctly
+   - **If any number doesn't tie, do not submit. Fix the model first.**
+
+4. **Risk ranking discipline**: Top risks ranked by `severity × likelihood`, not by "what's easiest to mitigate". The hardest-to-mitigate risk is usually the most important one.
+
+5. **Recommendation must be unambiguous**: Proceed / Pass / Conditional Proceed (with explicit conditions). No "lean toward proceed" — commit.

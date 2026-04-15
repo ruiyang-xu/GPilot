@@ -34,6 +34,7 @@ Launch all three agents simultaneously:
 - Return sensitivity: MOIC and IRR at various exit multiples and timelines
 - Comparable valuations (public comps, private comps, precedent transactions)
 - Cap table analysis and dilution modeling
+- **DCF model** (REQUIRED if deal stage ≥ Series B AND company has revenue): Invoke `/dcf {company}` as a sub-step. The DCF output (Bear/Base/Bull implied values, WACC, terminal assumptions) feeds directly into Section VII (Returns Analysis) of the memo. Skip DCF only if the deal is pre-revenue (early-stage SAFE/cap-based valuation) or if the user explicitly opts out.
 
 **legal-reviewer agent** (if term sheet available):
 - Term sheet review against market standards

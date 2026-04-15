@@ -7,6 +7,23 @@ Review and curate accumulated learnings across all agents. Run monthly or when l
 
 ## Process
 
+### Step 0: Process Daily Log (NEW — hook integration)
+
+Before reviewing accumulated learnings, drain the auto-captured session log:
+
+1. Read `learnings/_daily-log.md` — find all entries with `status: pending_reflection`
+2. For each pending session entry:
+   - Read its `transcript` JSONL file (path is in the entry)
+   - Scan the transcript for: tool errors, retries, user corrections, novel search strategies, MCP quirks
+   - Determine which agent(s) were active in that session
+   - If a reusable insight is found, append it to the relevant `learnings/{agent}.md`
+   - If user corrected output 2+ times in similar way, update `learnings/preferences.md`
+   - Mark the daily-log entry as `status: processed` with today's date
+3. After processing, prune entries marked `processed` older than 30 days from `_daily-log.md`
+
+This step turns the **streaming session capture** (Stop hook → daily log) into
+**batched agent learnings** (curated weekly).
+
 ### Step 1: Load All Learnings
 
 Read `learnings/_index.md` and all per-agent learning files:

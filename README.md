@@ -1,12 +1,13 @@
 <p align="center">
   <h1 align="center">GPilot</h1>
-  <p align="center"><strong>AI-Powered Financial Intelligence</strong></p>
-  <p align="center">Research, analyze, and invest — with 9 AI agents, 16 commands, and a knowledge base that gets smarter every day.</p>
+  <p align="center"><strong>Self-Evolving Financial Intelligence</strong></p>
+  <p align="center">Research, analyze, and invest — with 9 self-learning AI agents, 20 commands, a Karpathy-style knowledge base, and a three-tier memory system that gets smarter after every session.</p>
   <p align="center">
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
     <a href="https://claude.ai/claude-code"><img src="https://img.shields.io/badge/built%20with-Claude%20Code-blueviolet" alt="Claude Code"></a>
     <img src="https://img.shields.io/badge/agents-9-green" alt="9 Agents">
-    <img src="https://img.shields.io/badge/commands-16-green" alt="16 Commands">
+    <img src="https://img.shields.io/badge/commands-20-green" alt="20 Commands">
+    <img src="https://img.shields.io/badge/self--evolving-yes-purple" alt="Self-evolving">
     <img src="https://img.shields.io/badge/bilingual-EN%20%2B%20CN-orange" alt="Bilingual">
   </p>
 </p>
@@ -48,26 +49,29 @@ The AI finance space has 50K-star repos for **public equity trading**. Nobody ha
 | What You Need | Traditional Tools | GPilot |
 |---------------|-------------------|--------|
 | Deal sourcing | Affinity ($500/mo), manual scanning | `/source-deals` — AI-powered, daily triage, free |
-| Investment memos | Associate + 2 days | `/ic-memo` — structured, 10 minutes |
+| Investment memos | Associate + 2 days | `/ic-memo` — structured, 10 minutes, auto-builds DCF |
+| DCF valuation models | Analyst + 1 day | `/dcf` — institutional-quality model with sensitivity tables |
 | Research reports | Analyst team + 1 week | `/research` — same day, bilingual EN + CN |
-| Portfolio monitoring | Google Alerts + spreadsheets | `portfolio-news` — automated, daily |
+| Portfolio monitoring | Google Alerts + spreadsheets | `portfolio-news` + auto-refreshing valuations |
 | Company intelligence | Hours of manual research | `/company-intel` — multi-source, 5 minutes |
 | Market analysis | Bloomberg ($24K/yr) | `/market-data` + `/earnings-watch` — free |
+| Institutional memory | Notion + spreadsheets you forget to update | `learnings/` + `wiki/` — auto-captured, compounds across sessions |
 
-**GPilot is the first open-source Agentic OS for finance.** Not another chatbot — a complete operating system with agents, workflows, scheduled automation, and a knowledge base that compounds over time.
+**GPilot is the first open-source self-evolving Agentic OS for finance.** Not another chatbot — a complete operating system with agents that learn from every session, hooks that auto-capture insights, a knowledge base that compounds over time, and institutional-grade workflows from deal sourcing to LP reporting.
 
 ---
 
 ## What's Inside
 
 ```
-9 AI Agents          Research, analysis, sourcing, writing, translation, editing
-16 Slash Commands    Deal flow, research pipeline, knowledge base, portfolio ops
-10 Scheduled Tasks   Daily briefings, weekly market notes, deal flow triage
+9 AI Agents          Self-learning agents — read past experience on startup, reflect after every task
+20 Slash Commands    Deal flow, research, valuation (DCF), knowledge base, portfolio ops, evolution
+10 Scheduled Tasks   Daily briefings, weekly market notes, deal flow triage, hook-driven reflection
 8 Templates          Investment memo, 5 research formats, board deck, agreements
-7 Skill Domains      Deep research, deal pipeline, valuation, publication, translation
-1 Dashboard          Next.js portfolio visualization with sample data
+7 Skill Domains      Deep research, deal pipeline, DCF valuation, publication, translation
 1 Knowledge Base     LLM-compiled wiki (Karpathy pattern) — gets smarter every day
+1 Learning System    Three-tier memory (preferences + wiki + per-agent learnings) + Stop hook auto-capture
+1 Dashboard          Next.js portfolio visualization with sample data
 3 Modules            Fund-ops (LP/compliance), extras (11 more tasks), Feishu integration
 ```
 
@@ -75,9 +79,9 @@ The AI finance space has 50K-star repos for **public equity trading**. Nobody ha
 
 ## Hero Features
 
-### 1. Deal Sourcing Pipeline
+### 1. Deal Sourcing → IC → DCF Pipeline
 
-From discovery to investment memo — the full private market workflow:
+From discovery to institutional-quality valuation — the full private market workflow:
 
 ```
 /source-deals    →  Scan GitHub trending, funding rounds, industry reports
@@ -89,7 +93,16 @@ From discovery to investment memo — the full private market workflow:
                     Data: Saved to deals.json pipeline tracker
 
 /ic-memo         →  Generate investment memo with comps, model, risks
+                    Auto-invokes /dcf for Series B+ deals with revenue
                     Output: Professional .docx ready for IC presentation
+
+/dcf             →  Build institutional-quality DCF model:
+                    - Bear/Base/Bull scenario blocks with case selector
+                    - Full WACC sheet (CAPM + capital structure)
+                    - 75 sensitivity formulas (3 tables × 25 cells)
+                    - Equity bridge: EV → Net Debt → Per-Share Implied Price
+                    - 6 user-verification gates (no end-to-end builds)
+                    Output: deals/{company}/dcf-model.xlsx, validated by recalc.py
 
 /company-intel   →  Deep brief: financials, competitive landscape, news
                     Output: Dossier saved to deals/{company}/dossier.md
@@ -136,6 +149,52 @@ Month 6: Your personal Bloomberg, trained on YOUR data
 /lint-wiki    →  Health check: stale data, broken links, contradictions
 ```
 
+### 4. Self-Evolving Agent Framework
+
+GPilot agents **learn from every session** — zero external dependencies, all file-based.
+
+Three-tier memory system:
+
+| Tier | Where | Stores | Who Writes |
+|------|-------|--------|-----------|
+| **Preferences** | `learnings/preferences.md` | "User wants weekly notes < 1500 words", "Always include China peers in comps" | Auto-captured after 2+ user corrections |
+| **Wiki** | `wiki/` | "Company X raised $50M Series C in Q1 2026" | `/ingest`, `/query` feedback |
+| **Learnings** | `learnings/{agent}.md` | "When searching Series C funding, add 'growth round' to catch non-standard naming" | Each agent reflects after task |
+
+**The evolution loop**:
+
+```
+Agent startup
+  → reads learnings/{agent}.md (past experience)
+  → reads wiki/ (domain knowledge)
+  → reads data/state/running-jobs.json (cross-session jobs)
+  → executes task
+  → Stop hook auto-captures session metadata to learnings/_daily-log.md
+  → /reflect or /review-learnings extracts insights → appends to learnings/{agent}.md
+  → next session auto-loads this experience
+```
+
+**Commands**:
+
+```
+/reflect          →  Manual trigger: review recent work, capture learnings
+/review-learnings →  Curate accumulated learnings — prune stale, promote cross-cutting
+/jobs             →  List, resume, or clean up multi-session running jobs
+```
+
+**Hook integration** (`.claude/settings.json`):
+
+The `Stop` hook fires after every Claude session and runs `scripts/hooks/auto-reflect.sh`,
+which appends session metadata to `learnings/_daily-log.md`. Weekly `/review-learnings`
+processes the log and rolls up insights into per-agent learning files. **No manual
+discipline required** — the system captures itself.
+
+> **Karpathy + Hermes + Anthropic Harness, fused.** Inspired by Andrej Karpathy's LLM
+> Knowledge Base pattern (wiki layer), Nous Research's Hermes self-reflection mechanism
+> (learnings layer), and Anthropic's harness blog post (state-as-discipline pattern).
+> The ML community has been building these patterns for engineering agents — GPilot is
+> the first time they're applied to investment intelligence.
+
 ---
 
 ## Architecture
@@ -153,26 +212,37 @@ You (Analyst / Investor / Fund Manager)
                            │ /ingest
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  wiki/             LLM-compiled knowledge graph                 │
+│  wiki/             LLM-compiled knowledge graph (Karpathy)      │
 │  ├── companies/    Per-company articles (auto-maintained)       │
 │  ├── sectors/      Sector analysis with comp model refs         │
 │  └── deals/        Pipeline status + deal history               │
 └────────┬──────────────────────────────┬─────────────────────────┘
-         │ /query, /company-intel       │ /research, /source-deals
+         │ /query, /company-intel       │ /research, /source-deals, /dcf
          ▼                              ▼
 ┌────────────────────┐    ┌──────────────────────────────────────┐
-│  output/           │    │  9 AI Agents working in parallel     │
-│  ├── queries/      │    │  ├── deep-researcher (Perplexity)    │
-│  ├── research/     │    │  ├── financial-analyst (comps+models) │
+│  output/           │    │  9 Self-Learning AI Agents            │
+│  ├── queries/      │◀──▶│  ├── deep-researcher (Perplexity)    │
+│  ├── research/     │    │  ├── financial-analyst (DCF/comps)    │
 │  └── memos/        │    │  ├── deal-sourcer (opportunity scan)  │
 └────────────────────┘    │  ├── memo-writer (IC documents)       │
-                          │  ├── translator (EN↔CN)               │
+         │                │  ├── translator (EN↔CN)               │
          │ /publish       │  └── editor (quality gate)            │
-         ▼                └──────────────────────────────────────┘
-┌────────────────────┐
-│  WeChat + LinkedIn │    data/state/*.json  ← Machine-readable SSOT
-│  Bilingual distro  │    dashboard/         ← Next.js portfolio UI
-└────────────────────┘
+         ▼                │  Each agent reads learnings/{agent}.md│
+┌────────────────────┐    │  on startup, reflects after task      │
+│  WeChat + LinkedIn │    └──────────┬───────────────────────────┘
+│  Bilingual distro  │               │
+└────────────────────┘               │ Stop hook auto-captures
+                                     ▼
+                          ┌──────────────────────────────────────┐
+                          │  learnings/         3-tier memory     │
+                          │  ├── preferences.md (user prefs)      │
+                          │  ├── system.md      (cross-cutting)   │
+                          │  ├── _daily-log.md  (hook capture)    │
+                          │  └── {agent}.md     (per-agent)       │
+                          └──────────────────────────────────────┘
+
+  data/state/*.json  ← Machine-readable SSOT (deals, portfolio, jobs, evolution log)
+  dashboard/         ← Next.js portfolio UI
 ```
 
 ---
@@ -213,6 +283,7 @@ cd dashboard && npm install       # Optional: portfolio dashboard
 ### "I'm a Financial Analyst"
 ```
 /company-intel NVIDIA              # Deep company brief
+/dcf NVIDIA                        # Build DCF model with sensitivity tables
 /market-data AAPL                  # Public market data lookup
 /earnings-watch MSFT               # Earnings analysis
 /query "Compare cloud infrastructure margins across hyperscalers"
@@ -230,8 +301,17 @@ cd dashboard && npm install       # Optional: portfolio dashboard
 ```
 /source-deals                      # Discover opportunities
 /deal-screen                       # Evaluate a specific deal
-/portfolio-review                  # Portfolio health check
+/ic-memo "Acme Robotics"           # Generate IC memo (auto-builds DCF)
+/portfolio-review                  # Portfolio health check (auto-refreshes stale DCFs)
 /weekly-digest                     # Weekly intelligence summary
+```
+
+### "I'm a System Operator"
+```
+/jobs                              # See multi-session jobs in progress
+/reflect                           # Trigger agent self-reflection on recent work
+/review-learnings                  # Curate accumulated learnings
+/lint-wiki                         # Wiki health check
 ```
 
 ### "I'm a Fund Manager"
@@ -312,7 +392,7 @@ MIT License. See [LICENSE](LICENSE).
 ---
 
 <p align="center">
-  <strong>The first Agentic OS for finance.</strong><br>
-  金融领域的第一个 AI 智能体操作系统。<br><br>
-  <a href="docs/getting-started.md">Getting Started</a> · <a href="CLAUDE.md">System Config</a> · <a href="modules/README.md">Modules</a> · <a href="examples/">Examples</a>
+  <strong>The first self-evolving Agentic OS for finance.</strong><br>
+  金融领域的第一个能自我进化的 AI 智能体操作系统。<br><br>
+  <a href="docs/getting-started.md">Getting Started</a> · <a href="CLAUDE.md">System Config</a> · <a href="CHANGELOG.md">Changelog</a> · <a href="modules/README.md">Modules</a> · <a href="examples/">Examples</a>
 </p>

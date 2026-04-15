@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 -c \"import json; json.load\\(open\\('data/state/schema.json'\\)\\); print\\('schema.json: valid JSON'\\)\")"
+      "Bash(python3 -c \"import json; json.load\\(open\\('data/state/schema.json'\\)\\); print\\('schema.json: valid JSON'\\)\")",
+      "WebSearch",
+      "Bash(chmod +x \"C:/Users/xurui/Documents/GitHub/GPilot/scripts/hooks/auto-reflect.sh\")",
+      "Bash(bash scripts/hooks/auto-reflect.sh)",
+      "Bash(echo \"---hook exit: $?---\")",
+      "Bash(echo \"exit: $?\")",
+      "Bash(gh api:*)"
     ]
   }
 }

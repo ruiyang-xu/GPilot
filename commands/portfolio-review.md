@@ -24,8 +24,13 @@ Launch the **financial-analyst agent**:
   - Last round pricing (if within 12 months)
   - Public comparable multiples applied to latest financials
   - Any material events affecting valuation (up or down)
+- **DCF refresh trigger** (auto-invoke `/dcf {company}` if ANY of these are true):
+  - `last_valuation_date` > 12 months ago
+  - `valuation_source` ≠ "DCF" AND stage ≥ Series C
+  - `valuation_confidence` = "Low" AND company has revenue
+  - Recent material event (funding round, exec change, customer win/loss) since last valuation
 - Calculate MOIC for each position
-- Document valuation methodology and confidence level
+- Document valuation methodology and confidence level (per `valuation-report` skill)
 
 ### Step 4: Portfolio-Level Metrics
 Calculate:

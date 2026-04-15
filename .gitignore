@@ -23,6 +23,9 @@ credentials*.json
 .claude/plans/
 .claude/mcp-needs-auth-cache.json
 
+# Per-user local permission grants (never share across machines)
+.claude/settings.local.json
+
 # Node
 node_modules/
 

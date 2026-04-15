@@ -41,7 +41,7 @@
 │   ├── system.md       ← Cross-cutting system learnings
 │   └── {agent}.md      ← Per-agent learnings (9 files)
 ├── agents/             ← 9 AI agent definitions
-├── commands/           ← 20 slash command workflows
+├── commands/           ← 22 slash command workflows
 ├── skills/             ← 7 skill domains (with reference docs)
 ├── templates/          ← 8 document templates
 ├── scheduled/          ← 10 core scheduled tasks
@@ -101,6 +101,8 @@
 | `/market-data` | Public market data lookup |
 | `/earnings-watch` | Earnings analysis |
 | `/dcf` | Build institutional-quality DCF model with Bear/Base/Bull + sensitivity tables |
+| `/portfolio-variance` | Per-company variance analysis — actuals vs budget, covenant compliance, KPI trends |
+| `/founder-outreach` | Draft personalized founder cold email (Gmail drafts only, mandatory email dedup) |
 
 ### Knowledge Base & System
 | Command | Purpose |

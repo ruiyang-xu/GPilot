@@ -109,9 +109,16 @@ Run the applicable modules based on `source_type`. When `source_type` is "all", 
 After running applicable modules, aggregate all discovered companies:
 
 ### Deduplication
-1. Check each company against `existing_companies` list
-2. Remove any exact or fuzzy matches (same company, different name spelling)
-3. Remove duplicates found across multiple modules (merge signals instead)
+1. Check each company against `existing_companies` list (exact + fuzzy match)
+2. **Email dedup** (NEW): For any company surviving state-file dedup, run the email
+   dedup check from `skills/deal-pipeline/references/email-dedup.md`:
+   - Gmail MCP search for company name / domain / founder
+   - Classify as New / Existing / Previously Passed
+   - Annotate each remaining company with `contact_status` field
+   - Companies flagged `Previously Passed` are EXCLUDED from results (not just flagged)
+     unless the user explicitly opted in via `--include-passed`
+3. Remove any exact or fuzzy matches (same company, different name spelling)
+4. Remove duplicates found across multiple modules (merge signals instead)
 
 ### Pre-Screen Score (0–5)
 
@@ -153,11 +160,18 @@ Return a structured JSON array. Each entry:
     "signal_strength": "High",
     "discovery_date": "2026-04-05"
   },
+  "contact_status": "New",
+  "prior_thread_summary": null,
   "pre_screen_score": 4.2,
   "recommended_action": "Screen",
   "rationale": "Strong GitHub traction in AI agent space, tier-1 investors, Series A fits our check size range"
 }
 ```
+
+**`contact_status` values**: `"New"` (no prior contact found), `"Existing"` (prior
+email thread — populate `prior_thread_summary` with date range + outcome),
+`"Previously Passed"` (explicit pass in prior thread or state — excluded from results
+unless user opts in), `"Unknown"` (dedup check inconclusive — user confirmation needed).
 
 ### Recommended Actions
 - **Screen** (score >= 3.5): Promote to `/deal-screen` for full evaluation

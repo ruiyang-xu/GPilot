@@ -4,6 +4,143 @@ All notable changes to GPilot are documented in this file. Format follows
 [Keep a Changelog](https://keepachangelog.com/) and the project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] — 2026-04-15 — P1 Follow-ups: Variance + Outreach + DCF Validation
+
+> **Theme**: Post-v0.2.0 polish. Closes two known gaps from the FSP gap analysis
+> (per-company variance analysis and founder outreach with email dedup), runs the
+> first end-to-end production validation of the `/dcf` command, and cleans up
+> user-local config leakage.
+
+### Highlights
+
+- 📊 **`/portfolio-variance`** — per-company variance analysis (revenue/EBITDA vs budget,
+  covenant compliance, KPI trends) with 🟢🟡🔴 triage. Auto-triggered as drill-down from
+  `/portfolio-review` Step 2 for any flagged company.
+- 📧 **`/founder-outreach`** — personalized founder cold email drafting with mandatory
+  email dedup (Gmail MCP search for prior threads) and voice matching from user's sent
+  folder. Gmail drafts only — never auto-sends.
+- ✅ **First DCF production run** — `/dcf StellarML` executed end-to-end on a demo
+  portfolio company. All 10 skill steps verified. State layer integration (portfolio.json
+  write-back, running-jobs tracking, evolution-log event logging, learnings capture)
+  validated for the first time.
+- 🧹 **`.claude/settings.local.json` gitignored** — prevents per-user permission grants
+  from leaking across machines.
+
+### Added
+
+- `skills/portfolio-ops/references/variance-analysis.md` (274 lines) — full variance
+  methodology adapted from FSP's portfolio-monitoring skill; adds bilingual label mapping
+  (Chinese → English), sector KPI cross-reference, and state-layer integration
+- `commands/portfolio-variance.md` (162 lines) — wraps the skill as a slash command;
+  8-step workflow with auto-DCF-refresh trigger for Red-flagged companies
+- `skills/deal-pipeline/references/email-dedup.md` (173 lines) — 3-state contact
+  classification (New / Existing / Previously Passed), Gmail MCP integration, rate-limit
+  discipline, confidentiality rules
+- `commands/founder-outreach.md` (221 lines) — 9-step cold email drafting workflow with
+  mandatory email dedup pre-check, voice matching from sent folder, Gmail draft creation,
+  and safety guardrails (no auto-send, no attachments, anonymization)
+
+### Changed
+
+- `agents/deal-sourcer.md` — Step 1 deduplication now runs email dedup check via
+  `skills/deal-pipeline/references/email-dedup.md`; output schema includes
+  `contact_status` and `prior_thread_summary` fields
+- `commands/source-deals.md` — Step 4 adds new "Outreach" action that chains to
+  `/founder-outreach`; results table now includes contact_status column; Previously
+  Passed companies excluded from results by default
+- `commands/portfolio-review.md` — Step 2 adds variance drill-down trigger: any company
+  flagged Yellow/Red auto-invokes `/portfolio-variance` as a sub-step
+- `CLAUDE.md` — commands table: 20 → 22 commands (adds `/portfolio-variance` and
+  `/founder-outreach`); directory map updated
+- `.gitignore` — adds `.claude/settings.local.json` entry to prevent user-local
+  permission grants from being committed
+- `.claude/settings.local.json` — removed from git tracking via `git rm --cached`
+  (file stays on disk, but no longer version-controlled)
+- `learnings/financial-analyst.md` — 3 new Active Learnings captured from the P1.1 DCF
+  test run (terminal value dominance for growth-stage, Python/openpyxl fallback need,
+  `data/comps/` directory empty)
+
+### DCF end-to-end validation (P1.1)
+
+Executed `/dcf StellarML` against the demo portfolio and documented results in
+`output/digests/2026-04-15-dcf-stellarml-test.md` (gitignored — stays local).
+
+**Pipeline validated**:
+
+- [x] Context loading from `data/state/portfolio.json`
+- [x] Job registration in `data/state/running-jobs.json`
+- [x] All 10 steps of `dcf-construction.md` executed cleanly
+- [x] Three-scenario construction (Bear $3.23/Base $7.32/Bull $20.83)
+- [x] Three 5×5 sensitivity tables constructed (WACC×TermG, Growth×Margin, Beta×Rf)
+- [x] Equity bridge: EV → Net Debt → Diluted Shares → Implied Price per Share
+- [x] State write-back to `portfolio.json` (StellarML: $120M → $146M; source: Last Round → DCF)
+- [x] Evolution event logging to `evolution-log.json` (3 events)
+- [x] Learning capture to `learnings/financial-analyst.md` (3 Active Learnings)
+- [x] Artifact production (CSV fallback: `deals/stellarml/dcf-model.csv`)
+
+**Gaps documented** (none fatal, all addressable in future iterations):
+
+1. **Terminal value dominance** — For Series B SaaS, TV is 85-95% of EV (not 50-70%).
+   Pre-profitable companies have negative explicit-period FCFs, so TV mathematically
+   dominates. DCF should be used as SECONDARY methodology alongside last-round comp for
+   growth-stage privates.
+2. **Python/openpyxl not universally available** — The `xlsx` skill requires Python +
+   LibreOffice for `recalc.py`. On Windows without Python, full xlsx output is not
+   possible. Fallback: CSV + markdown, demonstrated in this test.
+3. **`data/comps/` directory empty by default** — `dcf-construction.md` references
+   `data/comps/{sector}.xlsx` but the directory ships empty. Need either seed templates
+   or graceful degradation via live MCP.
+
+All three gaps are logged as Active Learnings in `learnings/financial-analyst.md` so
+future `/dcf` runs automatically apply the corrections.
+
+### Migration notes
+
+No migration required. All changes are additive or cleanup:
+
+- **Existing users with `.claude/settings.local.json`**: the file stays on your disk
+  but is now gitignored. If you previously committed it, run
+  `git rm --cached .claude/settings.local.json` on your local clone to untrack it
+  without losing the file. Future commits won't include it.
+- **New `/portfolio-variance` command**: try it on a portfolio company with recent
+  financials: `/portfolio-variance "Quantum Labs"`. You'll be asked for the financial
+  package path (monthly/quarterly package from management).
+- **New `/founder-outreach` command**: requires Gmail MCP for full functionality (dedup
+  + voice matching). Degrades gracefully without it (falls back to default tone and user
+  prompt for dedup confirmation).
+- **Updated `/source-deals`**: now surfaces companies with `contact_status` flag from
+  email dedup. You can directly action "Outreach" on results to chain into the draft
+  flow.
+
+### File-level summary
+
+**New files (4)**:
+- `skills/portfolio-ops/references/variance-analysis.md`
+- `commands/portfolio-variance.md`
+- `skills/deal-pipeline/references/email-dedup.md`
+- `commands/founder-outreach.md`
+
+**Modified files (7)**:
+- `CLAUDE.md`
+- `.gitignore`
+- `agents/deal-sourcer.md`
+- `commands/source-deals.md`
+- `commands/portfolio-review.md`
+- `learnings/financial-analyst.md`
+- `learnings/_daily-log.md` (auto-captured by Stop hook during this session)
+
+**Removed from tracking (1)**:
+- `.claude/settings.local.json` (now gitignored; file remains on user's disk)
+
+**User-local artifacts from P1.1 DCF test (not committed — in gitignored paths)**:
+- `deals/stellarml/dcf-model.csv` — 150-line synthetic DCF model
+- `output/digests/2026-04-15-dcf-stellarml-test.md` — full test report
+- `data/state/portfolio.json` — StellarML entry updated with DCF valuation
+- `data/state/running-jobs.json` — job registered and marked completed
+- `data/state/evolution-log.json` — 3 learning events logged
+
+---
+
 ## [0.2.0] — 2026-04-15 — Self-Evolving Framework + DCF
 
 > **Theme**: GPilot moves from "stateless harness" to "self-evolving system".

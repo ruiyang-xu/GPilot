@@ -18,6 +18,12 @@ For each active company, launch the **portfolio-monitor agent** (batch in groups
 - Customer reviews and sentiment
 - Flag any material events
 
+**Variance drill-down trigger**: For any company flagged Yellow or Red in Step 2 (or where
+`last_variance_status` in portfolio.json is not Green), auto-invoke `/portfolio-variance {company}`
+as a sub-step. This produces per-company budget vs actual analysis, covenant compliance, and
+sector KPI trends. If no recent financial package is on hand, ask the user for one before
+proceeding with the variance drill-down (do NOT invent budgets).
+
 ### Step 3: Valuation Update
 Launch the **financial-analyst agent**:
 - For each company, assess current fair value:

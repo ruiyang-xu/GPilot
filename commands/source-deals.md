@@ -70,12 +70,19 @@ Then show per-company detail cards for top results (score >= 3.0):
 
 ### Step 4: User Actions
 
-For each company, offer three actions:
+For each company, offer four actions:
 - **Screen** → Hand off to `/deal-screen {company}` with pre-loaded sourcing context
+- **Outreach** → Hand off to `/founder-outreach {company}` to draft a cold email (mandatory
+  email dedup check runs first; `Previously Passed` companies will be blocked)
 - **Watch** → Add to `data/state/watchlist.json` with full sourcing signals
 - **Skip** → Do not track
 
-Ask the user: "Which companies would you like to Screen, Watch, or Skip? (e.g., 'Screen 1,3 Watch 2,5 Skip rest')"
+Ask the user: "Which companies would you like to Screen, Outreach, Watch, or Skip?
+(e.g., 'Screen 1,3 Outreach 2 Watch 4,5 Skip rest')"
+
+**Contact status display**: In the results table from Step 3, always show `contact_status`
+as a column. Companies flagged `Existing` get a 🟡 icon in the table header column; they
+can still be actioned but the user is clearly informed of the prior thread.
 
 ### Step 5: Execute Actions
 
@@ -83,11 +90,20 @@ Ask the user: "Which companies would you like to Screen, Watch, or Skip? (e.g., 
 - Add entry to `data/state/deals.json` with status "Sourced", source field set to the appropriate sourcing type, and `sourcing_context` populated
 - Suggest: "Run `/deal-screen {company}` to proceed with full evaluation"
 
+**For Outreach**:
+- Verify `contact_status` is not `Previously Passed` (if it is, halt and escalate)
+- Add entry to `data/state/watchlist.json` first (same fields as Watch below)
+- Then chain to `/founder-outreach {company}` — the outreach command will run its own
+  mandatory email dedup + draft flow and produce a Gmail draft for user review
+- The watchlist entry's `outreach_status` field will be updated to `draft_created` by
+  the founder-outreach command
+
 **For Watch**:
 - Add entry to `data/state/watchlist.json` with:
   - `watchlist_id`: `watch-{company-slug}-{date}`
   - `source_type`: matching the sourcing module that found it
   - `sourcing_signals`: full signal data from the agent
+  - `contact_status`: from the agent's email dedup check
   - `pre_screen_score`: from the agent
   - `reason`: matching the primary signal type (e.g., "GitHub trending", "Recent funding")
   - `key_metrics_tracked`: based on signal type (e.g., "GitHub stars, funding rounds" for GitHub-sourced)

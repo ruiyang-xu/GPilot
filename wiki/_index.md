@@ -28,7 +28,7 @@ _No people articles yet._
 ## Concepts
 
 <!-- Frameworks, structures, regulations -->
-_No concept articles yet._
+- [Strategic Reading Guide 战略阅读指南](concepts/strategic-reading-guide.md)
 
 ---
 
